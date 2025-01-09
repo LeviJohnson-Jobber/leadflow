@@ -36,7 +36,7 @@ const Index = () => {
       isHot: false,
       createdAt: new Date(),
       stage: "Contacted",
-      stageEnteredAt: new Date(Date.now() - 1000 * 60 * 60 * 24 * 7), // 7 days ago
+      stageEnteredAt: new Date(Date.now() - 1000 * 60 * 60 * 24 * 10), // 10 days ago (overdue)
     },
     {
       id: "3",
@@ -58,7 +58,7 @@ const Index = () => {
       isHot: false,
       createdAt: new Date(),
       stage: "Quoted",
-      stageEnteredAt: new Date(Date.now() - 1000 * 60 * 60 * 24 * 14), // 14 days ago
+      stageEnteredAt: new Date(Date.now() - 1000 * 60 * 60 * 24 * 14), // 14 days ago (overdue)
     },
     {
       id: "5",
@@ -71,6 +71,39 @@ const Index = () => {
       stage: "Negotiation",
       stageEnteredAt: new Date(Date.now() - 1000 * 60 * 60 * 24 * 5), // 5 days ago
     },
+    {
+      id: "6",
+      name: "Lisa Anderson",
+      contactMethod: "email",
+      contactInfo: "lisa.a@email.com",
+      service: "Solar Panel Installation",
+      isHot: true,
+      createdAt: new Date(),
+      stage: "New",
+      stageEnteredAt: new Date(Date.now() - 1000 * 60 * 60 * 24 * 1), // 1 day ago
+    },
+    {
+      id: "7",
+      name: "Robert Taylor",
+      contactMethod: "phone",
+      contactInfo: "555-9012",
+      service: "Basement Waterproofing",
+      isHot: false,
+      createdAt: new Date(),
+      stage: "Follow-Up",
+      stageEnteredAt: new Date(Date.now() - 1000 * 60 * 60 * 24 * 9), // 9 days ago (overdue)
+    },
+    {
+      id: "8",
+      name: "Jennifer White",
+      contactMethod: "email",
+      contactInfo: "jen.w@email.com",
+      service: "Landscaping Project",
+      isHot: true,
+      createdAt: new Date(),
+      stage: "Quoted",
+      stageEnteredAt: new Date(Date.now() - 1000 * 60 * 60 * 24 * 3), // 3 days ago
+    }
   ]);
 
   const handleNewLead = (leadData: Omit<Lead, "id" | "createdAt" | "stageEnteredAt">) => {
@@ -109,7 +142,7 @@ const Index = () => {
   };
 
   return (
-    <div className="h-screen bg-gray-50 p-4">
+    <div className="h-screen bg-gradient-to-b from-slate-100 to-white p-4">
       <div className="h-full">
         <div className="flex justify-between items-center mb-6">
           <h1 className="text-2xl font-bold text-gray-900">Leads Pipeline</h1>

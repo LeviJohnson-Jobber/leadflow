@@ -35,27 +35,30 @@ export function LeadCard({ lead, className, index }: LeadCardProps) {
           {...provided.draggableProps}
           {...provided.dragHandleProps}
           className={cn(
-            "bg-white p-3 rounded-lg shadow-sm border border-gray-200 hover:shadow-md transition-shadow",
+            "bg-white p-3 rounded-lg shadow-sm border border-gray-200 hover:shadow-md transition-shadow h-[180px] flex flex-col justify-between",
+            isOverdue && "border-l-4 border-l-red-500",
             className
           )}
         >
-          <div className="flex justify-between items-start mb-2">
-            <h3 className="font-medium text-gray-900">{lead.name}</h3>
-            <div className="flex gap-1">
-              {isOverdue && <AlertCircle className="text-red-500 w-5 h-5" />}
-              {lead.isHot && <Flame className="text-orange-500 w-5 h-5" />}
+          <div>
+            <div className="flex justify-between items-start mb-2">
+              <h3 className="font-medium text-gray-900 truncate max-w-[80%]">{lead.name}</h3>
+              <div className="flex gap-1">
+                {isOverdue && <AlertCircle className="text-red-500 w-5 h-5" />}
+                {lead.isHot && <Flame className="text-orange-500 w-5 h-5" />}
+              </div>
             </div>
-          </div>
-          
-          <div className="text-sm text-gray-600 mb-2">{lead.service}</div>
-          
-          <div className="flex items-center gap-2 text-sm text-gray-500 mb-2">
-            {lead.contactMethod === "phone" ? (
-              <Phone className="w-4 h-4" />
-            ) : (
-              <Mail className="w-4 h-4" />
-            )}
-            <span>{lead.contactInfo}</span>
+            
+            <div className="text-sm text-gray-600 mb-2 truncate">{lead.service}</div>
+            
+            <div className="flex items-center gap-2 text-sm text-gray-500 mb-2">
+              {lead.contactMethod === "phone" ? (
+                <Phone className="w-4 h-4" />
+              ) : (
+                <Mail className="w-4 h-4" />
+              )}
+              <span className="truncate">{lead.contactInfo}</span>
+            </div>
           </div>
           
           <div className="flex items-center gap-1 text-xs text-gray-400">
