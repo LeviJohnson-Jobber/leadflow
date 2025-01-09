@@ -7,6 +7,7 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Textarea } from "@/components/ui/textarea";
 import { Plus } from "lucide-react";
 import { Lead } from "./LeadCard";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 interface NewLeadDialogProps {
   onLeadCreate: (lead: Omit<Lead, "id" | "createdAt" | "stageEnteredAt">) => void;
@@ -19,6 +20,7 @@ export function NewLeadDialog({ onLeadCreate }: NewLeadDialogProps) {
   const [contactInfo, setContactInfo] = useState("");
   const [service, setService] = useState("");
   const [isHot, setIsHot] = useState(false);
+  const [stage, setStage] = useState("New");
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -28,13 +30,14 @@ export function NewLeadDialog({ onLeadCreate }: NewLeadDialogProps) {
       contactInfo,
       service,
       isHot,
-      stage: "New",
+      stage,
     });
     setOpen(false);
     setName("");
     setContactInfo("");
     setService("");
     setIsHot(false);
+    setStage("New");
   };
 
   return (
@@ -97,6 +100,24 @@ export function NewLeadDialog({ onLeadCreate }: NewLeadDialogProps) {
               onChange={(e) => setService(e.target.value)}
               required
             />
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="stage">Initial Stage</Label>
+            <Select value={stage} onValueChange={setStage}>
+              <SelectTrigger>
+                <SelectValue placeholder="Select stage" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="New">New</SelectItem>
+                <SelectItem value="Contacted">Contacted</SelectItem>
+                <SelectItem value="Follow-Up">Follow-Up</SelectItem>
+                <SelectItem value="Quoted">Quoted</SelectItem>
+                <SelectItem value="Negotiation">Negotiation</SelectItem>
+                <SelectItem value="Won">Won</SelectItem>
+                <SelectItem value="Lost">Lost</SelectItem>
+              </SelectContent>
+            </Select>
           </div>
           
           <div className="flex items-center space-x-2">
