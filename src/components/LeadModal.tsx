@@ -9,6 +9,20 @@ import { Flame, Clock, Phone, Mail, AlertCircle, User, Globe, MessageSquare, Sta
 import { formatDistanceToNow } from "date-fns";
 import type { Lead } from "./LeadCard";
 import LeadMap from "./LeadMap";
+import { Calendar } from "@/components/ui/calendar";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { Button } from "@/components/ui/button";
+import { format } from "date-fns";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { useState } from "react";
+
+const SALES_REPS = [
+  "John Doe",
+  "Jane Smith",
+  "Mike Johnson",
+  "Sarah Williams",
+  "David Brown"
+];
 
 interface LeadModalProps {
   lead: Lead;
@@ -17,6 +31,10 @@ interface LeadModalProps {
 }
 
 export function LeadModal({ lead, open, onOpenChange }: LeadModalProps) {
+  const [lastContacted, setLastContacted] = useState<Date | undefined>(lead.lastContacted);
+  const [nextFollowUp, setNextFollowUp] = useState<Date | undefined>(lead.nextFollowUp);
+  const [assignedTo, setAssignedTo] = useState(lead.assignedTo || "John Doe");
+  
   const daysInStage = Math.floor(
     (new Date().getTime() - new Date(lead.stageEnteredAt).getTime()) / (1000 * 60 * 60 * 24)
   );
@@ -115,13 +133,79 @@ export function LeadModal({ lead, open, onOpenChange }: LeadModalProps) {
 
           <Card className="col-span-2">
             <CardContent className="pt-6">
-              <h3 className="font-semibold mb-2 flex items-center gap-2">
-                <MessageSquare className="w-4 h-4" /> Notes
+              <h3 className="font-semibold mb-4 flex items-center gap-2">
+                <MessageSquare className="w-4 h-4" /> Notes & Follow-up
               </h3>
-              <div className="text-sm text-gray-600">
-                <p>Last contacted: Not available</p>
-                <p>Next follow-up: Not scheduled</p>
-                <p>Assigned to: John Doe</p>
+              <div className="space-y-4">
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium">Last Contacted</label>
+                    <Popover>
+                      <PopoverTrigger asChild>
+                        <Button
+                          variant="outline"
+                          className="w-full justify-start text-left font-normal"
+                        >
+                          {lastContacted ? (
+                            format(lastContacted, "PPP")
+                          ) : (
+                            <span className="text-muted-foreground">Pick a date</span>
+                          )}
+                        </Button>
+                      </PopoverTrigger>
+                      <PopoverContent className="w-auto p-0">
+                        <Calendar
+                          mode="single"
+                          selected={lastContacted}
+                          onSelect={setLastContacted}
+                          initialFocus
+                        />
+                      </PopoverContent>
+                    </Popover>
+                  </div>
+
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium">Next Follow-up</label>
+                    <Popover>
+                      <PopoverTrigger asChild>
+                        <Button
+                          variant="outline"
+                          className="w-full justify-start text-left font-normal"
+                        >
+                          {nextFollowUp ? (
+                            format(nextFollowUp, "PPP")
+                          ) : (
+                            <span className="text-muted-foreground">Schedule follow-up</span>
+                          )}
+                        </Button>
+                      </PopoverTrigger>
+                      <PopoverContent className="w-auto p-0">
+                        <Calendar
+                          mode="single"
+                          selected={nextFollowUp}
+                          onSelect={setNextFollowUp}
+                          initialFocus
+                        />
+                      </PopoverContent>
+                    </Popover>
+                  </div>
+                </div>
+
+                <div className="space-y-2">
+                  <label className="text-sm font-medium">Assigned To</label>
+                  <Select value={assignedTo} onValueChange={setAssignedTo}>
+                    <SelectTrigger className="w-full">
+                      <SelectValue placeholder="Select a sales rep" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {SALES_REPS.map((rep) => (
+                        <SelectItem key={rep} value={rep}>
+                          {rep}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
               </div>
             </CardContent>
           </Card>

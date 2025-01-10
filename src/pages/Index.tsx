@@ -25,7 +25,10 @@ const Index = () => {
       isHot: true,
       createdAt: new Date(),
       stage: "New",
-      stageEnteredAt: new Date(Date.now() - 1000 * 60 * 60 * 24 * 2), // 2 days ago
+      stageEnteredAt: new Date(Date.now() - 1000 * 60 * 60 * 24 * 2),
+      lastContacted: new Date(Date.now() - 1000 * 60 * 60 * 24 * 1),
+      nextFollowUp: new Date(Date.now() + 1000 * 60 * 60 * 24 * 2),
+      assignedTo: "John Doe",
       location: {
         address: "123 Main St, San Francisco, CA 94105",
         lat: 37.7749,
@@ -41,7 +44,10 @@ const Index = () => {
       isHot: false,
       createdAt: new Date(),
       stage: "Contacted",
-      stageEnteredAt: new Date(Date.now() - 1000 * 60 * 60 * 24 * 10), // 10 days ago (overdue)
+      stageEnteredAt: new Date(Date.now() - 1000 * 60 * 60 * 24 * 10),
+      lastContacted: new Date(Date.now() - 1000 * 60 * 60 * 24 * 5),
+      nextFollowUp: new Date(Date.now() + 1000 * 60 * 60 * 24 * 3),
+      assignedTo: "Jane Smith",
       location: {
         address: "456 Market St, San Francisco, CA 94105",
         lat: 37.7897,
@@ -57,7 +63,10 @@ const Index = () => {
       isHot: true,
       createdAt: new Date(),
       stage: "Follow-Up",
-      stageEnteredAt: new Date(Date.now() - 1000 * 60 * 60 * 24 * 1), // 1 day ago
+      stageEnteredAt: new Date(Date.now() - 1000 * 60 * 60 * 24 * 1),
+      lastContacted: new Date(Date.now() - 1000 * 60 * 60 * 24 * 1),
+      nextFollowUp: new Date(Date.now() + 1000 * 60 * 60 * 24 * 1),
+      assignedTo: "Mike Johnson",
       location: {
         address: "789 Howard St, San Francisco, CA 94103",
         lat: 37.7825,
@@ -73,7 +82,10 @@ const Index = () => {
       isHot: false,
       createdAt: new Date(),
       stage: "Quoted",
-      stageEnteredAt: new Date(Date.now() - 1000 * 60 * 60 * 24 * 14), // 14 days ago (overdue)
+      stageEnteredAt: new Date(Date.now() - 1000 * 60 * 60 * 24 * 14),
+      lastContacted: new Date(Date.now() - 1000 * 60 * 60 * 24 * 10),
+      nextFollowUp: new Date(Date.now() + 1000 * 60 * 60 * 24 * 5),
+      assignedTo: "Sarah Williams",
       location: {
         address: "321 Mission St, San Francisco, CA 94105",
         lat: 37.7909,
@@ -89,7 +101,10 @@ const Index = () => {
       isHot: true,
       createdAt: new Date(),
       stage: "Negotiation",
-      stageEnteredAt: new Date(Date.now() - 1000 * 60 * 60 * 24 * 5), // 5 days ago
+      stageEnteredAt: new Date(Date.now() - 1000 * 60 * 60 * 24 * 5),
+      lastContacted: new Date(Date.now() - 1000 * 60 * 60 * 24 * 3),
+      nextFollowUp: new Date(Date.now() + 1000 * 60 * 60 * 24 * 1),
+      assignedTo: "David Brown",
       location: {
         address: "555 California St, San Francisco, CA 94104",
         lat: 37.7929,
@@ -105,7 +120,10 @@ const Index = () => {
       isHot: true,
       createdAt: new Date(),
       stage: "New",
-      stageEnteredAt: new Date(Date.now() - 1000 * 60 * 60 * 24 * 1), // 1 day ago
+      stageEnteredAt: new Date(Date.now() - 1000 * 60 * 60 * 24 * 1),
+      lastContacted: new Date(Date.now() - 1000 * 60 * 60 * 24 * 1),
+      nextFollowUp: new Date(Date.now() + 1000 * 60 * 60 * 24 * 2),
+      assignedTo: "John Doe",
       location: {
         address: "1 Telegraph Hill Blvd, San Francisco, CA 94133",
         lat: 37.8024,
@@ -121,7 +139,10 @@ const Index = () => {
       isHot: false,
       createdAt: new Date(),
       stage: "Follow-Up",
-      stageEnteredAt: new Date(Date.now() - 1000 * 60 * 60 * 24 * 9), // 9 days ago (overdue)
+      stageEnteredAt: new Date(Date.now() - 1000 * 60 * 60 * 24 * 9),
+      lastContacted: new Date(Date.now() - 1000 * 60 * 60 * 24 * 7),
+      nextFollowUp: new Date(Date.now() + 1000 * 60 * 60 * 24 * 3),
+      assignedTo: "Jane Smith",
       location: {
         address: "900 North Point St, San Francisco, CA 94109",
         lat: 37.8058,
@@ -137,7 +158,10 @@ const Index = () => {
       isHot: true,
       createdAt: new Date(),
       stage: "Quoted",
-      stageEnteredAt: new Date(Date.now() - 1000 * 60 * 60 * 24 * 3), // 3 days ago
+      stageEnteredAt: new Date(Date.now() - 1000 * 60 * 60 * 24 * 3),
+      lastContacted: new Date(Date.now() - 1000 * 60 * 60 * 24 * 2),
+      nextFollowUp: new Date(Date.now() + 1000 * 60 * 60 * 24 * 4),
+      assignedTo: "David Brown",
       location: {
         address: "101 California St, San Francisco, CA 94111",
         lat: 37.7932,
@@ -152,6 +176,9 @@ const Index = () => {
       id: Math.random().toString(36).substr(2, 9),
       createdAt: new Date(),
       stageEnteredAt: new Date(),
+      lastContacted: undefined,
+      nextFollowUp: undefined,
+      assignedTo: "John Doe",
     };
     setLeads((prev) => [...prev, newLead]);
   };

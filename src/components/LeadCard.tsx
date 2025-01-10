@@ -14,6 +14,9 @@ export interface Lead {
   createdAt: Date;
   stage: string;
   stageEnteredAt: Date;
+  lastContacted?: Date;
+  nextFollowUp?: Date;
+  assignedTo: string;
   location?: {
     address: string;
     lat: number;
