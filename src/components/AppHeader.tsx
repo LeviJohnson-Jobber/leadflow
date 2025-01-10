@@ -5,13 +5,10 @@ import { Input } from "./ui/input";
 export function AppHeader() {
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-[#f8f9fa]">
-      <div className="flex h-14 items-center px-4 gap-4">
-        <div className="flex items-center gap-2">
-          <div className="h-8 w-8 rounded bg-slate-900"></div>
-          <span className="text-lg font-semibold">GROW</span>
-        </div>
+      <div className="flex h-14 items-center px-4">
+        <div className="flex-1" />
         
-        <div className="flex-1 ml-8">
+        <div className="flex items-center gap-4">
           <div className="relative w-full max-w-sm">
             <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-slate-400" />
             <Input 
@@ -22,9 +19,7 @@ export function AppHeader() {
               /
             </div>
           </div>
-        </div>
 
-        <div className="flex items-center gap-2">
           <Button variant="ghost" size="icon" className="h-9 w-9">
             <Sparkles className="h-[18px] w-[18px] text-slate-600" />
           </Button>
