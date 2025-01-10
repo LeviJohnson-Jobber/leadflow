@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { NewLeadDialog } from "@/components/NewLeadDialog";
 import { PipelineColumn } from "@/components/PipelineColumn";
+import { AppSidebar } from "@/components/AppSidebar";
+import { SidebarProvider } from "@/components/ui/sidebar";
 import type { Lead } from "@/components/LeadCard";
 import { DragDropContext, DropResult } from "react-beautiful-dnd";
 
@@ -209,29 +211,33 @@ const Index = () => {
   };
 
   return (
-    <div className="h-screen bg-gradient-to-b from-slate-100 to-white p-4">
-      <div className="h-full">
-        <div className="flex justify-between items-center mb-6">
-          <h1 className="text-2xl font-bold text-gray-900">Leads Pipeline</h1>
-          <NewLeadDialog onLeadCreate={handleNewLead} />
-        </div>
-        
-        <DragDropContext onDragEnd={onDragEnd}>
-          <div className="grid grid-cols-7 gap-4 h-[calc(100vh-120px)]">
-            {PIPELINE_STAGES.map((stage) => (
-              <PipelineColumn
-                key={stage}
-                title={stage}
-                leads={leads.filter((lead) => lead.stage === stage)}
-                droppableId={stage}
-              />
-            ))}
+    <SidebarProvider defaultOpen={true}>
+      <div className="flex h-screen w-full">
+        <AppSidebar />
+        <div className="flex-1 bg-gradient-to-b from-slate-100 to-white p-4">
+          <div className="h-full">
+            <div className="flex justify-between items-center mb-6">
+              <h1 className="text-2xl font-bold text-gray-900">Leads Pipeline</h1>
+              <NewLeadDialog onLeadCreate={handleNewLead} />
+            </div>
+            
+            <DragDropContext onDragEnd={onDragEnd}>
+              <div className="grid grid-cols-7 gap-4 h-[calc(100vh-120px)]">
+                {PIPELINE_STAGES.map((stage) => (
+                  <PipelineColumn
+                    key={stage}
+                    title={stage}
+                    leads={leads.filter((lead) => lead.stage === stage)}
+                    droppableId={stage}
+                  />
+                ))}
+              </div>
+            </DragDropContext>
           </div>
-        </DragDropContext>
+        </div>
       </div>
-    </div>
+    </SidebarProvider>
   );
-
 };
 
 export default Index;

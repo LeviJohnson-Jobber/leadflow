@@ -1,139 +1,70 @@
-import { useState } from "react";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { useForm } from "react-hook-form";
+import { Dialog } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { Textarea } from "@/components/ui/textarea";
-import { Plus } from "lucide-react";
-import { Lead } from "./LeadCard";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
-interface NewLeadDialogProps {
+export function NewLeadDialog({
+  onLeadCreate,
+}: {
   onLeadCreate: (lead: Omit<Lead, "id" | "createdAt" | "stageEnteredAt">) => void;
-}
+}) {
+  const form = useForm<{
+    name: string;
+    contactMethod: "phone" | "email";
+    contactInfo: string;
+    service: string;
+    isHot: boolean;
+  }>();
 
-export function NewLeadDialog({ onLeadCreate }: NewLeadDialogProps) {
-  const [open, setOpen] = useState(false);
-  const [name, setName] = useState("");
-  const [contactMethod, setContactMethod] = useState<"phone" | "email">("phone");
-  const [contactInfo, setContactInfo] = useState("");
-  const [service, setService] = useState("");
-  const [isHot, setIsHot] = useState(false);
-  const [stage, setStage] = useState("New");
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
+  const onSubmit = (data: any) => {
     onLeadCreate({
-      name,
-      contactMethod,
-      contactInfo,
-      service,
-      isHot,
-      stage,
+      ...data,
+      stage: "New",
+      assignedTo: "John Doe", // Add default assignedTo
     });
-    setOpen(false);
-    setName("");
-    setContactInfo("");
-    setService("");
-    setIsHot(false);
-    setStage("New");
+    form.reset();
   };
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>
-        <Button>
-          <Plus className="w-4 h-4 mr-2" />
-          New Lead
-        </Button>
-      </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px]">
-        <DialogHeader>
-          <DialogTitle>Add New Lead</DialogTitle>
-        </DialogHeader>
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div className="space-y-2">
-            <Label htmlFor="name">Name</Label>
-            <Input
-              id="name"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              required
-            />
+    <Dialog>
+      <Dialog.Trigger asChild>
+        <Button variant="outline">New Lead</Button>
+      </Dialog.Trigger>
+      <Dialog.Content>
+        <Dialog.Title>Create New Lead</Dialog.Title>
+        <form onSubmit={form.handleSubmit(onSubmit)}>
+          <div>
+            <Label>Name</Label>
+            <Input {...form.register("name")} required />
           </div>
-          
-          <div className="space-y-2">
+          <div>
             <Label>Contact Method</Label>
-            <RadioGroup
-              value={contactMethod}
-              onValueChange={(value) => setContactMethod(value as "phone" | "email")}
-              className="flex gap-4"
-            >
-              <div className="flex items-center space-x-2">
-                <RadioGroupItem value="phone" id="phone" />
-                <Label htmlFor="phone">Phone</Label>
-              </div>
-              <div className="flex items-center space-x-2">
-                <RadioGroupItem value="email" id="email" />
-                <Label htmlFor="email">Email</Label>
-              </div>
-            </RadioGroup>
+            <select {...form.register("contactMethod")} required>
+              <option value="phone">Phone</option>
+              <option value="email">Email</option>
+            </select>
           </div>
-          
-          <div className="space-y-2">
-            <Label htmlFor="contactInfo">Contact Info</Label>
-            <Input
-              id="contactInfo"
-              value={contactInfo}
-              onChange={(e) => setContactInfo(e.target.value)}
-              required
-              type={contactMethod === "email" ? "email" : "tel"}
-            />
+          <div>
+            <Label>Contact Info</Label>
+            <Input {...form.register("contactInfo")} required />
           </div>
-          
-          <div className="space-y-2">
-            <Label htmlFor="service">Service Requested</Label>
-            <Textarea
-              id="service"
-              value={service}
-              onChange={(e) => setService(e.target.value)}
-              required
-            />
+          <div>
+            <Label>Service</Label>
+            <Input {...form.register("service")} required />
           </div>
-
-          <div className="space-y-2">
-            <Label htmlFor="stage">Initial Stage</Label>
-            <Select value={stage} onValueChange={setStage}>
-              <SelectTrigger>
-                <SelectValue placeholder="Select stage" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="New">New</SelectItem>
-                <SelectItem value="Contacted">Contacted</SelectItem>
-                <SelectItem value="Follow-Up">Follow-Up</SelectItem>
-                <SelectItem value="Quoted">Quoted</SelectItem>
-                <SelectItem value="Negotiation">Negotiation</SelectItem>
-                <SelectItem value="Won">Won</SelectItem>
-                <SelectItem value="Lost">Lost</SelectItem>
-              </SelectContent>
-            </Select>
+          <div>
+            <Label>
+              <Checkbox {...form.register("isHot")} />
+              Hot Lead
+            </Label>
           </div>
-          
-          <div className="flex items-center space-x-2">
-            <input
-              type="checkbox"
-              id="isHot"
-              checked={isHot}
-              onChange={(e) => setIsHot(e.target.checked)}
-              className="rounded border-gray-300"
-            />
-            <Label htmlFor="isHot">Mark as Hot Lead</Label>
-          </div>
-          
-          <Button type="submit" className="w-full">Add Lead</Button>
+          <Dialog.Footer>
+            <Button type="submit">Create Lead</Button>
+          </Dialog.Footer>
         </form>
-      </DialogContent>
+      </Dialog.Content>
     </Dialog>
   );
 }
