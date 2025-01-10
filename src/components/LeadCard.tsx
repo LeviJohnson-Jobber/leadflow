@@ -14,6 +14,11 @@ export interface Lead {
   createdAt: Date;
   stage: string;
   stageEnteredAt: Date;
+  location?: {
+    address: string;
+    lat: number;
+    lng: number;
+  };
 }
 
 interface LeadCardProps {

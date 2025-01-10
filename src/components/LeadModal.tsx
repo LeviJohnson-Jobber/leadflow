@@ -5,9 +5,10 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Card, CardContent } from "@/components/ui/card";
-import { Flame, Clock, Phone, Mail, AlertCircle, User, Globe, MessageSquare, Star } from "lucide-react";
+import { Flame, Clock, Phone, Mail, AlertCircle, User, Globe, MessageSquare, Star, Map } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
 import type { Lead } from "./LeadCard";
+import LeadMap from "./LeadMap";
 
 interface LeadModalProps {
   lead: Lead;
@@ -100,6 +101,17 @@ export function LeadModal({ lead, open, onOpenChange }: LeadModalProps) {
               </div>
             </CardContent>
           </Card>
+
+          {lead.location && (
+            <Card className="col-span-2">
+              <CardContent className="pt-6">
+                <h3 className="font-semibold mb-2 flex items-center gap-2">
+                  <Map className="w-4 h-4" /> Location
+                </h3>
+                <LeadMap location={lead.location} />
+              </CardContent>
+            </Card>
+          )}
 
           <Card className="col-span-2">
             <CardContent className="pt-6">
