@@ -6,12 +6,6 @@ export function AppHeader() {
   return (
     <header className="sticky top-0 z-50 w-full border-b border-slate-200 bg-[#f8f9fa]">
       <div className="flex h-14 items-center px-4">
-        <img 
-          src="/lovable-uploads/46aefbb6-a9ff-4254-91b2-735b5f9bb771.png" 
-          alt="Logo" 
-          className="h-6 w-6 mr-auto"
-        />
-        
         <div className="flex items-center gap-4">
           <div className="relative w-full max-w-sm">
             <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-slate-400" />
