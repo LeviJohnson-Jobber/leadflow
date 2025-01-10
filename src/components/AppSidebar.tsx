@@ -13,6 +13,7 @@ import {
   ScrollText,
   Download,
   Image,
+  UserPlus,
 } from "lucide-react";
 
 import {
@@ -30,6 +31,7 @@ const menuItems = [
   { icon: Plus, label: "Create" },
   { icon: Home, label: "Home" },
   { icon: CalendarDays, label: "Schedule" },
+  { icon: UserPlus, label: "Leads" },
   { icon: Users, label: "Clients" },
   { icon: Download, label: "Requests" },
   { icon: ScrollText, label: "Quotes" },
