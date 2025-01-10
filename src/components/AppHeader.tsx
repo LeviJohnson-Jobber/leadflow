@@ -6,6 +6,11 @@ export function AppHeader() {
   return (
     <header className="sticky top-0 z-50 w-full border-b border-slate-200 bg-[#f8f9fa]">
       <div className="flex h-14 items-center px-4">
+        <img 
+          src="/lovable-uploads/46aefbb6-a9ff-4254-91b2-735b5f9bb771.png" 
+          alt="Logo" 
+          className="h-6 w-6"
+        />
         <div className="flex-1" />
         
         <div className="flex items-center gap-4">
@@ -37,14 +42,7 @@ export function AppHeader() {
             <Settings className="h-[18px] w-[18px] text-slate-600" />
             <span className="absolute top-1.5 right-1.5 h-2.5 w-2.5 bg-red-500 rounded-full border-2 border-white"></span>
           </Button>
-          <div className="flex flex-col items-center gap-1">
-            <img 
-              src="/lovable-uploads/46aefbb6-a9ff-4254-91b2-735b5f9bb771.png" 
-              alt="Logo" 
-              className="h-6 w-6"
-            />
-            <div className="h-8 w-8 rounded-full bg-slate-200"></div>
-          </div>
+          <div className="h-8 w-8 rounded-full bg-slate-200"></div>
         </div>
       </div>
     </header>
