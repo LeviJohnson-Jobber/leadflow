@@ -4,7 +4,7 @@ import { Input } from "./ui/input";
 
 export function AppHeader() {
   return (
-    <header className="sticky top-0 z-50 w-full border-b bg-[#f8f9fa]">
+    <header className="sticky top-0 z-50 w-full border-b border-slate-200 bg-[#f8f9fa]">
       <div className="flex h-14 items-center px-4">
         <div className="flex-1" />
         

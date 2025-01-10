@@ -46,7 +46,7 @@ const menuItems = [
 
 export function AppSidebar() {
   return (
-    <Sidebar variant="inset" className="bg-slate-50 border-r">
+    <Sidebar variant="inset" className="bg-[#F1F1F1] border-r border-slate-200">
       <SidebarContent>
         <SidebarGroup>
           <SidebarGroupContent>
@@ -55,7 +55,7 @@ export function AppSidebar() {
                 <>
                   <SidebarMenuItem key={item.label}>
                     <SidebarMenuButton asChild>
-                      <a href="#" className="flex items-center gap-3 text-slate-700">
+                      <a href="#" className="flex items-center gap-3 text-[#555555] hover:text-[#333333] hover:bg-[#F6F6F7]">
                         <item.icon className="h-5 w-5" />
                         <span>{item.label}</span>
                       </a>
