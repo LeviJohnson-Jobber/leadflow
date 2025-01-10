@@ -26,6 +26,11 @@ const Index = () => {
       createdAt: new Date(),
       stage: "New",
       stageEnteredAt: new Date(Date.now() - 1000 * 60 * 60 * 24 * 2), // 2 days ago
+      location: {
+        address: "123 Main St, San Francisco, CA 94105",
+        lat: 37.7749,
+        lng: -122.4194
+      }
     },
     {
       id: "2",

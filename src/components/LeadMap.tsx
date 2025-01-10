@@ -19,20 +19,29 @@ const LeadMap = ({ location }: LeadMapProps) => {
   useEffect(() => {
     if (!mapContainer.current) return;
 
-    // Initialize map with a temporary token - in production, this should be stored securely
-    mapboxgl.accessToken = 'pk.your_token_here'; // Replace with your Mapbox token
+    mapboxgl.accessToken = 'pk.your_token_here'; // Replace with your actual token
     
-    map.current = new mapboxgl.Map({
-      container: mapContainer.current,
-      style: 'mapbox://styles/mapbox/light-v11',
-      center: [location.lng, location.lat],
-      zoom: 14,
-    });
+    try {
+      map.current = new mapboxgl.Map({
+        container: mapContainer.current,
+        style: 'mapbox://styles/mapbox/light-v11',
+        center: [location.lng, location.lat],
+        zoom: 14,
+      });
 
-    // Add marker
-    new mapboxgl.Marker()
-      .setLngLat([location.lng, location.lat])
-      .addTo(map.current);
+      // Add marker
+      new mapboxgl.Marker()
+        .setLngLat([location.lng, location.lat])
+        .addTo(map.current);
+
+      // Add error handling for map load
+      map.current.on('error', (e) => {
+        console.error('Mapbox error:', e);
+      });
+
+    } catch (error) {
+      console.error('Error initializing map:', error);
+    }
 
     return () => {
       map.current?.remove();
