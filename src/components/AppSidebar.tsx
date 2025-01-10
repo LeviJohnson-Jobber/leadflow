@@ -8,7 +8,6 @@ import {
   Megaphone,
   BarChart,
   Clock,
-  Apps,
   Gift,
   Plus,
   ScrollText,
@@ -40,7 +39,6 @@ const menuItems = [
   { icon: BarChart, label: "Reports" },
   { icon: Image, label: "Expenses" },
   { icon: Clock, label: "Timesheets" },
-  { icon: Apps, label: "Apps" },
   { icon: Gift, label: "Refer a Friend" },
 ];
 
