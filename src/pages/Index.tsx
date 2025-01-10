@@ -42,6 +42,11 @@ const Index = () => {
       createdAt: new Date(),
       stage: "Contacted",
       stageEnteredAt: new Date(Date.now() - 1000 * 60 * 60 * 24 * 10), // 10 days ago (overdue)
+      location: {
+        address: "456 Market St, San Francisco, CA 94105",
+        lat: 37.7897,
+        lng: -122.4000
+      }
     },
     {
       id: "3",
@@ -53,6 +58,11 @@ const Index = () => {
       createdAt: new Date(),
       stage: "Follow-Up",
       stageEnteredAt: new Date(Date.now() - 1000 * 60 * 60 * 24 * 1), // 1 day ago
+      location: {
+        address: "789 Howard St, San Francisco, CA 94103",
+        lat: 37.7825,
+        lng: -122.4037
+      }
     },
     {
       id: "4",
@@ -64,6 +74,11 @@ const Index = () => {
       createdAt: new Date(),
       stage: "Quoted",
       stageEnteredAt: new Date(Date.now() - 1000 * 60 * 60 * 24 * 14), // 14 days ago (overdue)
+      location: {
+        address: "321 Mission St, San Francisco, CA 94105",
+        lat: 37.7909,
+        lng: -122.3925
+      }
     },
     {
       id: "5",
@@ -75,6 +90,11 @@ const Index = () => {
       createdAt: new Date(),
       stage: "Negotiation",
       stageEnteredAt: new Date(Date.now() - 1000 * 60 * 60 * 24 * 5), // 5 days ago
+      location: {
+        address: "555 California St, San Francisco, CA 94104",
+        lat: 37.7929,
+        lng: -122.4037
+      }
     },
     {
       id: "6",
@@ -86,6 +106,11 @@ const Index = () => {
       createdAt: new Date(),
       stage: "New",
       stageEnteredAt: new Date(Date.now() - 1000 * 60 * 60 * 24 * 1), // 1 day ago
+      location: {
+        address: "1 Telegraph Hill Blvd, San Francisco, CA 94133",
+        lat: 37.8024,
+        lng: -122.4058
+      }
     },
     {
       id: "7",
@@ -97,6 +122,11 @@ const Index = () => {
       createdAt: new Date(),
       stage: "Follow-Up",
       stageEnteredAt: new Date(Date.now() - 1000 * 60 * 60 * 24 * 9), // 9 days ago (overdue)
+      location: {
+        address: "900 North Point St, San Francisco, CA 94109",
+        lat: 37.8058,
+        lng: -122.4222
+      }
     },
     {
       id: "8",
@@ -108,6 +138,11 @@ const Index = () => {
       createdAt: new Date(),
       stage: "Quoted",
       stageEnteredAt: new Date(Date.now() - 1000 * 60 * 60 * 24 * 3), // 3 days ago
+      location: {
+        address: "101 California St, San Francisco, CA 94111",
+        lat: 37.7932,
+        lng: -122.3984
+      }
     }
   ]);
 
@@ -169,6 +204,7 @@ const Index = () => {
       </div>
     </div>
   );
+
 };
 
 export default Index;
