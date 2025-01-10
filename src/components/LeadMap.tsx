@@ -19,7 +19,7 @@ const LeadMap = ({ location }: LeadMapProps) => {
   useEffect(() => {
     if (!mapContainer.current) return;
 
-    mapboxgl.accessToken = 'pk.your_token_here'; // Replace with your actual token
+    mapboxgl.accessToken = 'pk.eyJ1IjoibGV2aWpvaG5zb24iLCJhIjoiY201cXozNmp2MDVodzJscHgwdnkzZWFzayJ9.zhehg9-VUDjSNhqiCCRmqQ';
     
     try {
       map.current = new mapboxgl.Map({
