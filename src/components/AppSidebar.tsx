@@ -48,7 +48,7 @@ export function AppSidebar() {
   return (
     <Sidebar variant="inset" className="bg-[#F1F1F1] border-r border-slate-200">
       <SidebarContent>
-        <SidebarGroup>
+        <SidebarGroup className="pt-10">
           <SidebarGroupContent>
             <SidebarMenu>
               {menuItems.map((item, index) => (
