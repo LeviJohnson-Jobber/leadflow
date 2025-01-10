@@ -9,9 +9,8 @@ export function AppHeader() {
         <img 
           src="/lovable-uploads/46aefbb6-a9ff-4254-91b2-735b5f9bb771.png" 
           alt="Logo" 
-          className="h-6 w-6"
+          className="h-6 w-6 mr-auto"
         />
-        <div className="flex-1" />
         
         <div className="flex items-center gap-4">
           <div className="relative w-full max-w-sm">
