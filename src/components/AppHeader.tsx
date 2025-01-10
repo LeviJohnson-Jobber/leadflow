@@ -9,6 +9,11 @@ export function AppHeader() {
         <div className="flex-1" />
         
         <div className="flex items-center gap-4">
+          <img 
+            src="/lovable-uploads/46aefbb6-a9ff-4254-91b2-735b5f9bb771.png" 
+            alt="Logo" 
+            className="h-6 w-6"
+          />
           <div className="relative w-full max-w-sm">
             <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-slate-400" />
             <Input 
