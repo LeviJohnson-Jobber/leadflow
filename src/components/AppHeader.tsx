@@ -9,11 +9,6 @@ export function AppHeader() {
         <div className="flex-1" />
         
         <div className="flex items-center gap-4">
-          <img 
-            src="/lovable-uploads/46aefbb6-a9ff-4254-91b2-735b5f9bb771.png" 
-            alt="Logo" 
-            className="h-6 w-6"
-          />
           <div className="relative w-full max-w-sm">
             <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-slate-400" />
             <Input 
@@ -42,7 +37,14 @@ export function AppHeader() {
             <Settings className="h-[18px] w-[18px] text-slate-600" />
             <span className="absolute top-1.5 right-1.5 h-2.5 w-2.5 bg-red-500 rounded-full border-2 border-white"></span>
           </Button>
-          <div className="h-8 w-8 rounded-full bg-slate-200"></div>
+          <div className="flex flex-col items-center gap-1">
+            <img 
+              src="/lovable-uploads/46aefbb6-a9ff-4254-91b2-735b5f9bb771.png" 
+              alt="Logo" 
+              className="h-6 w-6"
+            />
+            <div className="h-8 w-8 rounded-full bg-slate-200"></div>
+          </div>
         </div>
       </div>
     </header>
