@@ -10,12 +10,21 @@ interface PipelineColumnProps {
 }
 
 export function PipelineColumn({ title, leads, className, droppableId }: PipelineColumnProps) {
+  const isWonStage = droppableId === "won";
+  const isLostStage = droppableId === "lost";
+
   return (
     <div className={cn(
       "bg-gradient-to-b from-slate-50 to-white rounded-lg p-3 flex flex-col h-full border border-slate-200",
+      isWonStage && "from-[#F2FCE2] to-white",
+      isLostStage && "from-red-50 to-white",
       className
     )}>
-      <h2 className="font-medium text-gray-900 mb-3 px-2">{title}</h2>
+      <h2 className={cn(
+        "font-medium mb-3 px-2",
+        isWonStage && "text-green-700",
+        isLostStage && "text-red-700"
+      )}>{title}</h2>
       <Droppable droppableId={droppableId}>
         {(provided) => (
           <div

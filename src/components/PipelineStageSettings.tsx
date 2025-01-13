@@ -18,6 +18,8 @@ export function PipelineStageSettings({
   onNameChange,
   onDelete,
 }: PipelineStageSettingsProps) {
+  const isSpecialStage = id === "won" || id === "lost";
+
   return (
     <Draggable draggableId={id} index={index}>
       {(provided) => (
@@ -35,15 +37,17 @@ export function PipelineStageSettings({
               className="w-full"
             />
           </div>
-          <Button
-            variant="ghost"
-            size="sm"
-            className="text-gray-500 hover:text-red-600 w-full justify-start"
-            onClick={() => onDelete(id)}
-          >
-            <Trash2 className="w-4 h-4 mr-2" />
-            Delete Stage
-          </Button>
+          {!isSpecialStage && (
+            <Button
+              variant="ghost"
+              size="sm"
+              className="text-gray-500 hover:text-red-600 w-full justify-start"
+              onClick={() => onDelete(id)}
+            >
+              <Trash2 className="w-4 h-4 mr-2" />
+              Delete Stage
+            </Button>
+          )}
         </div>
       )}
     </Draggable>
