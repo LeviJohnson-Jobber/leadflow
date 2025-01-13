@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { PipelineStageSettings } from "@/components/PipelineStageSettings";
 import { useToast } from "@/components/ui/use-toast";
+import { Plus } from "lucide-react";
 
 interface PipelineStage {
   id: string;
@@ -74,6 +75,16 @@ const PipelineSettings = () => {
     setStages([newStage, ...stages]);
   };
 
+  const handleAddStageAtPosition = (index: number) => {
+    const newStage: PipelineStage = {
+      id: `stage-${Date.now()}`,
+      name: "New Stage",
+    };
+    const updatedStages = [...stages];
+    updatedStages.splice(index + 1, 0, newStage);
+    setStages(updatedStages);
+  };
+
   const handleDragEnd = (result: DropResult) => {
     if (!result.destination) return;
 
@@ -134,14 +145,24 @@ const PipelineSettings = () => {
                         style={{ whiteSpace: 'nowrap' }}
                       >
                         {stages.map((stage, index) => (
-                          <div key={stage.id} className="flex-none w-[300px]">
-                            <PipelineStageSettings
-                              id={stage.id}
-                              name={stage.name}
-                              index={index}
-                              onNameChange={handleStageNameChange}
-                              onDelete={handleStageDelete}
-                            />
+                          <div key={stage.id} className="flex items-center">
+                            <div className="flex-none w-[300px]">
+                              <PipelineStageSettings
+                                id={stage.id}
+                                name={stage.name}
+                                index={index}
+                                onNameChange={handleStageNameChange}
+                                onDelete={handleStageDelete}
+                              />
+                            </div>
+                            {index < stages.length - 1 && (
+                              <button
+                                onClick={() => handleAddStageAtPosition(index)}
+                                className="flex-none mx-2 p-1 rounded-full hover:bg-gray-100 transition-colors"
+                              >
+                                <Plus className="w-5 h-5 text-gray-400 hover:text-gray-600" />
+                              </button>
+                            )}
                           </div>
                         ))}
                         {provided.placeholder}
