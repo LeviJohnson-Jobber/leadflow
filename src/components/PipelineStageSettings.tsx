@@ -27,9 +27,9 @@ export function PipelineStageSettings({
           ref={provided.innerRef}
           {...provided.draggableProps}
           {...provided.dragHandleProps}
-          className="bg-white rounded-lg p-4 space-y-4"
+          className="bg-white rounded-lg p-4 h-[160px] flex flex-col"
         >
-          <div className="space-y-2">
+          <div className="space-y-2 flex-1">
             <label className="text-sm text-gray-600">Name</label>
             <Input
               value={name}
@@ -37,17 +37,21 @@ export function PipelineStageSettings({
               className="w-full"
             />
           </div>
-          {!isSpecialStage && (
-            <Button
-              variant="ghost"
-              size="sm"
-              className="text-gray-500 hover:text-red-600 w-full justify-start"
-              onClick={() => onDelete(id)}
-            >
-              <Trash2 className="w-4 h-4 mr-2" />
-              Delete Stage
-            </Button>
-          )}
+          <div className="mt-auto">
+            {!isSpecialStage ? (
+              <Button
+                variant="ghost"
+                size="sm"
+                className="text-gray-500 hover:text-red-600 w-full justify-start"
+                onClick={() => onDelete(id)}
+              >
+                <Trash2 className="w-4 h-4 mr-2" />
+                Delete Stage
+              </Button>
+            ) : (
+              <div className="h-9" /> {/* Placeholder to maintain consistent height */}
+            )}
+          </div>
         </div>
       )}
     </Draggable>
