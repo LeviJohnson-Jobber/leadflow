@@ -8,7 +8,6 @@ import { PipelineHeader } from "@/components/PipelineHeader";
 import { PipelineGrid } from "@/components/PipelineGrid";
 import { LostLeadModal } from "@/components/LostLeadModal";
 
-// Get pipeline settings from localStorage
 const getPipelineSettings = () => {
   const stored = localStorage.getItem('pipelineSettings');
   if (stored) {
