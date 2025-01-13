@@ -15,6 +15,7 @@ import {
   Image,
   UserPlus,
 } from "lucide-react";
+import { useLocation } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 
 import {
@@ -47,6 +48,8 @@ const menuItems = [
 
 export function AppSidebar() {
   const navigate = useNavigate();
+  const location = useLocation();
+  const isLeadsPage = location.pathname === "/" || location.pathname === "/pipeline-settings";
 
   return (
     <Sidebar variant="inset" className="bg-[#F1F1F1] border-r border-slate-200">
@@ -60,7 +63,9 @@ export function AppSidebar() {
                     <SidebarMenuButton asChild>
                       <a 
                         href="#" 
-                        className="flex items-center gap-3 text-[#555555] hover:text-[#333333] hover:bg-[#F6F6F7]"
+                        className={`flex items-center gap-3 text-[#555555] hover:text-[#333333] hover:bg-[#F6F6F7] ${
+                          item.label === "Leads" && isLeadsPage ? "bg-[#F6F6F7]" : ""
+                        }`}
                         onClick={(e) => {
                           e.preventDefault();
                           if (item.path) {
@@ -73,7 +78,7 @@ export function AppSidebar() {
                       </a>
                     </SidebarMenuButton>
                   </SidebarMenuItem>
-                  {(index === 1 || index === 7 || index === 11) && <SidebarSeparator />}
+                  {(index === 2 || index === 8 || index === 13) && <SidebarSeparator />}
                 </>
               ))}
             </SidebarMenu>
