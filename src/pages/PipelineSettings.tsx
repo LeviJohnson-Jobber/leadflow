@@ -14,22 +14,38 @@ interface PipelineStage {
   name: string;
 }
 
-const defaultStages: PipelineStage[] = [
-  { id: "qualified", name: "Qualified" },
-  { id: "contact-made", name: "Contact Made" },
-  { id: "demo-scheduled", name: "Demo Scheduled" },
-  { id: "proposal-made", name: "Proposal Made" },
-  { id: "negotiations-started", name: "Negotiations Started" },
-];
+// Use localStorage to persist pipeline settings
+const getPipelineSettings = () => {
+  const stored = localStorage.getItem('pipelineSettings');
+  if (stored) {
+    return JSON.parse(stored);
+  }
+  return {
+    name: "Leads Pipeline",
+    stages: [
+      { id: "new", name: "New" },
+      { id: "contacted", name: "Contacted" },
+      { id: "follow-up", name: "Follow-Up" },
+      { id: "quoted", name: "Quoted" },
+      { id: "negotiation", name: "Negotiation" },
+      { id: "won", name: "Won" },
+      { id: "lost", name: "Lost" },
+    ]
+  };
+};
 
 const PipelineSettings = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
-  const [pipelineName, setPipelineName] = useState("Pipeline");
-  const [stages, setStages] = useState<PipelineStage[]>(defaultStages);
+  const [pipelineName, setPipelineName] = useState(getPipelineSettings().name);
+  const [stages, setStages] = useState<PipelineStage[]>(getPipelineSettings().stages);
 
   const handleSave = () => {
-    // Here you would typically save to your backend
+    const settings = {
+      name: pipelineName,
+      stages: stages
+    };
+    localStorage.setItem('pipelineSettings', JSON.stringify(settings));
     toast({
       title: "Success",
       description: "Pipeline settings saved successfully",

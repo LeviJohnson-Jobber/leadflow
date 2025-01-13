@@ -10,18 +10,29 @@ import { useNavigate } from "react-router-dom";
 import type { Lead } from "@/components/LeadCard";
 import { DragDropContext, DropResult } from "react-beautiful-dnd";
 
-const PIPELINE_STAGES = [
-  "New",
-  "Contacted",
-  "Follow-Up",
-  "Quoted",
-  "Negotiation",
-  "Won",
-  "Lost",
-];
+// Get pipeline settings from localStorage
+const getPipelineSettings = () => {
+  const stored = localStorage.getItem('pipelineSettings');
+  if (stored) {
+    return JSON.parse(stored);
+  }
+  return {
+    name: "Leads Pipeline",
+    stages: [
+      { id: "new", name: "New" },
+      { id: "contacted", name: "Contacted" },
+      { id: "follow-up", name: "Follow-Up" },
+      { id: "quoted", name: "Quoted" },
+      { id: "negotiation", name: "Negotiation" },
+      { id: "won", name: "Won" },
+      { id: "lost", name: "Lost" },
+    ]
+  };
+};
 
 const Index = () => {
   const navigate = useNavigate();
+  const [pipelineSettings] = useState(getPipelineSettings());
   const [leads, setLeads] = useState<Lead[]>([
     {
       id: "1",
@@ -31,7 +42,7 @@ const Index = () => {
       service: "Kitchen Remodeling",
       isHot: true,
       createdAt: new Date(),
-      stage: "New",
+      stage: "new",
       stageEnteredAt: new Date(Date.now() - 1000 * 60 * 60 * 24 * 2),
       lastContacted: new Date(Date.now() - 1000 * 60 * 60 * 24 * 1),
       nextFollowUp: new Date(Date.now() + 1000 * 60 * 60 * 24 * 2),
@@ -50,7 +61,7 @@ const Index = () => {
       service: "Bathroom Renovation",
       isHot: false,
       createdAt: new Date(),
-      stage: "Contacted",
+      stage: "contacted",
       stageEnteredAt: new Date(Date.now() - 1000 * 60 * 60 * 24 * 10),
       lastContacted: new Date(Date.now() - 1000 * 60 * 60 * 24 * 5),
       nextFollowUp: new Date(Date.now() + 1000 * 60 * 60 * 24 * 3),
@@ -69,7 +80,7 @@ const Index = () => {
       service: "Roof Repair",
       isHot: true,
       createdAt: new Date(),
-      stage: "Follow-Up",
+      stage: "follow-up",
       stageEnteredAt: new Date(Date.now() - 1000 * 60 * 60 * 24 * 1),
       lastContacted: new Date(Date.now() - 1000 * 60 * 60 * 24 * 1),
       nextFollowUp: new Date(Date.now() + 1000 * 60 * 60 * 24 * 1),
@@ -88,7 +99,7 @@ const Index = () => {
       service: "Window Installation",
       isHot: false,
       createdAt: new Date(),
-      stage: "Quoted",
+      stage: "quoted",
       stageEnteredAt: new Date(Date.now() - 1000 * 60 * 60 * 24 * 14),
       lastContacted: new Date(Date.now() - 1000 * 60 * 60 * 24 * 10),
       nextFollowUp: new Date(Date.now() + 1000 * 60 * 60 * 24 * 5),
@@ -107,7 +118,7 @@ const Index = () => {
       service: "HVAC Installation",
       isHot: true,
       createdAt: new Date(),
-      stage: "Negotiation",
+      stage: "negotiation",
       stageEnteredAt: new Date(Date.now() - 1000 * 60 * 60 * 24 * 5),
       lastContacted: new Date(Date.now() - 1000 * 60 * 60 * 24 * 3),
       nextFollowUp: new Date(Date.now() + 1000 * 60 * 60 * 24 * 1),
@@ -126,7 +137,7 @@ const Index = () => {
       service: "Solar Panel Installation",
       isHot: true,
       createdAt: new Date(),
-      stage: "New",
+      stage: "new",
       stageEnteredAt: new Date(Date.now() - 1000 * 60 * 60 * 24 * 1),
       lastContacted: new Date(Date.now() - 1000 * 60 * 60 * 24 * 1),
       nextFollowUp: new Date(Date.now() + 1000 * 60 * 60 * 24 * 2),
@@ -145,7 +156,7 @@ const Index = () => {
       service: "Basement Waterproofing",
       isHot: false,
       createdAt: new Date(),
-      stage: "Follow-Up",
+      stage: "follow-up",
       stageEnteredAt: new Date(Date.now() - 1000 * 60 * 60 * 24 * 9),
       lastContacted: new Date(Date.now() - 1000 * 60 * 60 * 24 * 7),
       nextFollowUp: new Date(Date.now() + 1000 * 60 * 60 * 24 * 3),
@@ -164,7 +175,7 @@ const Index = () => {
       service: "Landscaping Project",
       isHot: true,
       createdAt: new Date(),
-      stage: "Quoted",
+      stage: "quoted",
       stageEnteredAt: new Date(Date.now() - 1000 * 60 * 60 * 24 * 3),
       lastContacted: new Date(Date.now() - 1000 * 60 * 60 * 24 * 2),
       nextFollowUp: new Date(Date.now() + 1000 * 60 * 60 * 24 * 4),
@@ -224,7 +235,7 @@ const Index = () => {
           <div className="bg-gradient-to-b from-slate-100 to-white p-4">
             <div className="h-full">
               <div className="flex justify-between items-center mb-6">
-                <h1 className="text-2xl font-bold text-gray-900">Leads Pipeline</h1>
+                <h1 className="text-2xl font-bold text-gray-900">{pipelineSettings.name}</h1>
                 <div className="flex gap-2">
                   <NewLeadDialog onLeadCreate={handleNewLead} />
                   <Button
@@ -239,12 +250,12 @@ const Index = () => {
               
               <DragDropContext onDragEnd={onDragEnd}>
                 <div className="grid grid-cols-7 gap-4 h-[calc(100vh-180px)]">
-                  {PIPELINE_STAGES.map((stage) => (
+                  {pipelineSettings.stages.map((stage) => (
                     <PipelineColumn
-                      key={stage}
-                      title={stage}
-                      leads={leads.filter((lead) => lead.stage === stage)}
-                      droppableId={stage}
+                      key={stage.id}
+                      title={stage.name}
+                      leads={leads.filter((lead) => lead.stage === stage.id)}
+                      droppableId={stage.id}
                     />
                   ))}
                 </div>
