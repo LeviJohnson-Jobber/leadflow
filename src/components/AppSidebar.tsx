@@ -78,7 +78,7 @@ export function AppSidebar() {
                       </a>
                     </SidebarMenuButton>
                   </SidebarMenuItem>
-                  {(index === 2 || index === 8 || index === 13) && <SidebarSeparator />}
+                  {(item.label === "Schedule" || item.label === "Invoices" || item.label === "Timesheets") && <SidebarSeparator />}
                 </>
               ))}
             </SidebarMenu>
