@@ -6,6 +6,7 @@ import { PipelineGrid } from "@/components/PipelineGrid";
 import { MarkAsLostModal } from "@/components/MarkAsLostModal";
 import { useLeadsState } from "@/hooks/useLeadsState";
 import { useState } from "react";
+import type { Lead } from "@/components/LeadCard";
 
 const getPipelineSettings = () => {
   const stored = localStorage.getItem('pipelineSettings');
