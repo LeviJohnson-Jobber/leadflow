@@ -5,6 +5,8 @@ import { PipelineHeader } from "@/components/PipelineHeader";
 import { PipelineGrid } from "@/components/PipelineGrid";
 import { LostLeadModal } from "@/components/LostLeadModal";
 import { useLeadsState } from "@/hooks/useLeadsState";
+import { useState } from "react";
+import type { Lead } from "@/components/LeadCard";
 
 const getPipelineSettings = () => {
   const stored = localStorage.getItem('pipelineSettings');
@@ -25,11 +27,11 @@ const getPipelineSettings = () => {
   };
 };
 
-const initialLeads = [
+const initialLeads: Lead[] = [
     {
       id: "1",
       name: "John Smith",
-      contactMethod: "phone",
+      contactMethod: "phone" as const,
       contactInfo: "555-0123",
       service: "Kitchen Remodeling",
       isHot: true,
@@ -48,7 +50,7 @@ const initialLeads = [
     {
       id: "2",
       name: "Sarah Johnson",
-      contactMethod: "email",
+      contactMethod: "email" as const,
       contactInfo: "sarah.j@email.com",
       service: "Bathroom Renovation",
       isHot: false,
