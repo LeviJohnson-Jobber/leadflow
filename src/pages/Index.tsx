@@ -3,7 +3,7 @@ import { AppHeader } from "@/components/AppHeader";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { PipelineHeader } from "@/components/PipelineHeader";
 import { PipelineGrid } from "@/components/PipelineGrid";
-import { MarkAsLostModal } from "@/components/MarkAsLostModal";
+import { LostLeadModal } from "@/components/LostLeadModal";
 import { useLeadsState } from "@/hooks/useLeadsState";
 import { useState } from "react";
 import type { Lead } from "@/components/LeadCard";
@@ -214,7 +214,7 @@ const Index = () => {
           </div>
         </div>
       </div>
-      <MarkAsLostModal
+      <LostLeadModal
         open={!!movingLead}
         onOpenChange={(open) => !open && handleCancelLost()}
         onConfirm={handleMarkAsLost}
