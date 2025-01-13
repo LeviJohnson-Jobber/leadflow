@@ -4,10 +4,6 @@ import { DropResult } from "react-beautiful-dnd";
 
 export function useLeadsState(initialLeads: Lead[]) {
   const [leads, setLeads] = useState<Lead[]>(initialLeads);
-  const [movingLead, setMovingLead] = useState<{
-    lead: Lead;
-    sourceStage: string;
-  } | null>(null);
 
   const handleNewLead = (leadData: Omit<Lead, "id" | "createdAt" | "stageEnteredAt">) => {
     const newLead: Lead = {
@@ -40,21 +36,16 @@ export function useLeadsState(initialLeads: Lead[]) {
     // Create a new array without the moved lead
     const newLeads = leads.filter(l => l.id !== draggableId);
 
-    // If moving to lost column
-    if (destination.droppableId === "lost" && source.droppableId !== "lost") {
-      // Store the original state
-      setMovingLead({
-        lead: { ...leadToMove },
-        sourceStage: source.droppableId
-      });
-
-      // Add the lead back in with the lost stage
+    // If moving to lost column, mark as lost immediately
+    if (destination.droppableId === "lost") {
       setLeads([
         ...newLeads,
         {
           ...leadToMove,
           stage: "lost",
-          stageEnteredAt: new Date()
+          stageEnteredAt: new Date(),
+          lostReason: "Marked as lost",
+          lostNotes: "Automatically marked as lost when moved to Lost column"
         }
       ]);
       return;
@@ -71,47 +62,9 @@ export function useLeadsState(initialLeads: Lead[]) {
     ]);
   };
 
-  const handleMarkAsLost = (reason: string, notes: string) => {
-    if (!movingLead) return;
-
-    setLeads(prevLeads => 
-      prevLeads.map(lead => 
-        lead.id === movingLead.lead.id
-          ? {
-              ...lead,
-              lostReason: reason,
-              lostNotes: notes,
-              stage: "lost",
-              stageEnteredAt: new Date()
-            }
-          : lead
-      )
-    );
-    setMovingLead(null);
-  };
-
-  const handleCancelLost = () => {
-    if (!movingLead) return;
-
-    setLeads(prevLeads =>
-      prevLeads.map(lead =>
-        lead.id === movingLead.lead.id
-          ? {
-              ...movingLead.lead,
-              stage: movingLead.sourceStage
-            }
-          : lead
-      )
-    );
-    setMovingLead(null);
-  };
-
   return {
     leads,
-    movingLead,
     handleNewLead,
     onDragEnd,
-    handleMarkAsLost,
-    handleCancelLost,
   };
 }
