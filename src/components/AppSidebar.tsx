@@ -15,6 +15,7 @@ import {
   Image,
   UserPlus,
 } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 import {
   Sidebar,
@@ -31,7 +32,7 @@ const menuItems = [
   { icon: Plus, label: "Create" },
   { icon: Home, label: "Home" },
   { icon: CalendarDays, label: "Schedule" },
-  { icon: UserPlus, label: "Leads" },
+  { icon: UserPlus, label: "Leads", path: "/" },
   { icon: Users, label: "Clients" },
   { icon: Download, label: "Requests" },
   { icon: ScrollText, label: "Quotes" },
@@ -45,6 +46,8 @@ const menuItems = [
 ];
 
 export function AppSidebar() {
+  const navigate = useNavigate();
+
   return (
     <Sidebar variant="inset" className="bg-[#F1F1F1] border-r border-slate-200">
       <SidebarContent>
@@ -55,7 +58,16 @@ export function AppSidebar() {
                 <>
                   <SidebarMenuItem key={item.label}>
                     <SidebarMenuButton asChild>
-                      <a href="#" className="flex items-center gap-3 text-[#555555] hover:text-[#333333] hover:bg-[#F6F6F7]">
+                      <a 
+                        href="#" 
+                        className="flex items-center gap-3 text-[#555555] hover:text-[#333333] hover:bg-[#F6F6F7]"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          if (item.path) {
+                            navigate(item.path);
+                          }
+                        }}
+                      >
                         <item.icon className="h-5 w-5" />
                         <span>{item.label}</span>
                       </a>

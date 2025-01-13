@@ -4,6 +4,9 @@ import { PipelineColumn } from "@/components/PipelineColumn";
 import { AppSidebar } from "@/components/AppSidebar";
 import { AppHeader } from "@/components/AppHeader";
 import { SidebarProvider } from "@/components/ui/sidebar";
+import { Settings } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { useNavigate } from "react-router-dom";
 import type { Lead } from "@/components/LeadCard";
 import { DragDropContext, DropResult } from "react-beautiful-dnd";
 
@@ -18,6 +21,7 @@ const PIPELINE_STAGES = [
 ];
 
 const Index = () => {
+  const navigate = useNavigate();
   const [leads, setLeads] = useState<Lead[]>([
     {
       id: "1",
@@ -221,7 +225,16 @@ const Index = () => {
             <div className="h-full">
               <div className="flex justify-between items-center mb-6">
                 <h1 className="text-2xl font-bold text-gray-900">Leads Pipeline</h1>
-                <NewLeadDialog onLeadCreate={handleNewLead} />
+                <div className="flex gap-2">
+                  <NewLeadDialog onLeadCreate={handleNewLead} />
+                  <Button
+                    variant="outline"
+                    size="icon"
+                    onClick={() => navigate("/pipeline-settings")}
+                  >
+                    <Settings className="h-4 w-4" />
+                  </Button>
+                </div>
               </div>
               
               <DragDropContext onDragEnd={onDragEnd}>

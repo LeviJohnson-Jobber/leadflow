@@ -50,7 +50,7 @@ export function NewLeadDialog({
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button variant="outline">New Lead</Button>
+        <Button className="bg-[#8B5CF6] hover:bg-[#7C3AED] text-white">New Lead</Button>
       </DialogTrigger>
       <DialogContent>
         <DialogTitle>Create New Lead</DialogTitle>
