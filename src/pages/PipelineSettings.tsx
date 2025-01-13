@@ -146,7 +146,7 @@ const PipelineSettings = () => {
                       >
                         {stages.map((stage, index) => (
                           <div key={stage.id} className="flex items-center">
-                            <div className="flex-none w-[300px]">
+                            <div className="flex-none w-[210px]">
                               <PipelineStageSettings
                                 id={stage.id}
                                 name={stage.name}
