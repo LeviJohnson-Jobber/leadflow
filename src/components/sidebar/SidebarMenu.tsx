@@ -10,7 +10,9 @@ export function SidebarMenu() {
           <SidebarMenuItem key={item.label} {...item} />
           {(item.label === "Schedule" || 
             item.label === "Invoices" || 
-            item.label === "Timesheets") && <SidebarSeparator />}
+            item.label === "Timesheets") && (
+              <SidebarSeparator className="my-2 bg-slate-200" />
+          )}
         </>
       ))}
     </BaseSidebarMenu>
