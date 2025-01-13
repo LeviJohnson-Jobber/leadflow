@@ -1,14 +1,11 @@
 import { useState } from "react";
-import { NewLeadDialog } from "@/components/NewLeadDialog";
-import { PipelineColumn } from "@/components/PipelineColumn";
 import { AppSidebar } from "@/components/AppSidebar";
 import { AppHeader } from "@/components/AppHeader";
 import { SidebarProvider } from "@/components/ui/sidebar";
-import { Settings } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { useNavigate } from "react-router-dom";
 import type { Lead } from "@/components/LeadCard";
-import { DragDropContext, DropResult } from "react-beautiful-dnd";
+import { DropResult } from "react-beautiful-dnd";
+import { PipelineHeader } from "@/components/PipelineHeader";
+import { PipelineGrid } from "@/components/PipelineGrid";
 
 // Get pipeline settings from localStorage
 const getPipelineSettings = () => {
@@ -31,7 +28,6 @@ const getPipelineSettings = () => {
 };
 
 const Index = () => {
-  const navigate = useNavigate();
   const [pipelineSettings] = useState(getPipelineSettings());
   const [leads, setLeads] = useState<Lead[]>([
     {
@@ -234,32 +230,15 @@ const Index = () => {
           <AppHeader />
           <div className="bg-gradient-to-b from-slate-100 to-white p-4">
             <div className="h-full">
-              <div className="flex justify-between items-center mb-6">
-                <h1 className="text-2xl font-bold text-gray-900">{pipelineSettings.name}</h1>
-                <div className="flex gap-2">
-                  <NewLeadDialog onLeadCreate={handleNewLead} />
-                  <Button
-                    variant="outline"
-                    size="icon"
-                    onClick={() => navigate("/pipeline-settings")}
-                  >
-                    <Settings className="h-4 w-4" />
-                  </Button>
-                </div>
-              </div>
-              
-              <DragDropContext onDragEnd={onDragEnd}>
-                <div className="grid grid-cols-7 gap-4 h-[calc(100vh-180px)]">
-                  {pipelineSettings.stages.map((stage) => (
-                    <PipelineColumn
-                      key={stage.id}
-                      title={stage.name}
-                      leads={leads.filter((lead) => lead.stage === stage.id)}
-                      droppableId={stage.id}
-                    />
-                  ))}
-                </div>
-              </DragDropContext>
+              <PipelineHeader 
+                pipelineName={pipelineSettings.name}
+                onLeadCreate={handleNewLead}
+              />
+              <PipelineGrid 
+                stages={pipelineSettings.stages}
+                leads={leads}
+                onDragEnd={onDragEnd}
+              />
             </div>
           </div>
         </div>
