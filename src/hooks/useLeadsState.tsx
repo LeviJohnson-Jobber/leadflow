@@ -60,7 +60,7 @@ export function useLeadsState(initialLeads: Lead[]) {
     ]);
   };
 
-  const handleMarkAsLost = () => {
+  const handleMarkAsLost = (reason: string, notes: string) => {
     if (!movingLead) return;
 
     setLeads(prevLeads => 
@@ -70,8 +70,8 @@ export function useLeadsState(initialLeads: Lead[]) {
               ...lead,
               stage: "lost",
               stageEnteredAt: new Date(),
-              lostReason: "Marked as lost",
-              lostNotes: "Marked as lost"
+              lostReason: reason,
+              lostNotes: notes
             }
           : lead
       )
