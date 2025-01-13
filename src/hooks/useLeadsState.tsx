@@ -37,11 +37,20 @@ export function useLeadsState(initialLeads: Lead[]) {
     const lead = leads.find((l) => l.id === draggableId);
     if (!lead) return;
 
+    // If moving to lost column, store the original state and update immediately
     if (destination.droppableId === "lost" && source.droppableId !== "lost") {
       setMovingLead({ lead, sourceStage: source.droppableId });
+      const newLeads = leads.filter((l) => l.id !== draggableId);
+      const updatedLead = {
+        ...lead,
+        stage: "lost",
+        stageEnteredAt: new Date(),
+      };
+      setLeads([...newLeads, updatedLead]);
       return;
     }
 
+    // For all other moves, update normally
     const newLeads = leads.filter((l) => l.id !== draggableId);
     const updatedLead = {
       ...lead,
@@ -72,12 +81,12 @@ export function useLeadsState(initialLeads: Lead[]) {
     if (!movingLead) return;
 
     const newLeads = leads.filter((l) => l.id !== movingLead.lead.id);
-    const updatedLead = {
+    const restoredLead = {
       ...movingLead.lead,
       stage: movingLead.sourceStage,
     };
 
-    setLeads([...newLeads, updatedLead]);
+    setLeads([...newLeads, restoredLead]);
     setMovingLead(null);
   };
 
