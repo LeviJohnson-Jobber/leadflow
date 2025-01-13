@@ -1,14 +1,13 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { DragDropContext, Droppable, DropResult } from "@hello-pangea/dnd";
 import { AppSidebar } from "@/components/AppSidebar";
 import { AppHeader } from "@/components/AppHeader";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { PipelineStageSettings } from "@/components/PipelineStageSettings";
 import { useToast } from "@/components/ui/use-toast";
-import { Plus } from "lucide-react";
+import { PipelineStageList } from "@/components/PipelineStageList";
+import { PipelineNameInput } from "@/components/PipelineNameInput";
+import { PipelineSettingsHeader } from "@/components/PipelineSettingsHeader";
 
 interface PipelineStage {
   id: string;
@@ -85,16 +84,6 @@ const PipelineSettings = () => {
     setStages(updatedStages);
   };
 
-  const handleDragEnd = (result: DropResult) => {
-    if (!result.destination) return;
-
-    const items = Array.from(stages);
-    const [reorderedItem] = items.splice(result.source.index, 1);
-    items.splice(result.destination.index, 0, reorderedItem);
-
-    setStages(items);
-  };
-
   return (
     <SidebarProvider defaultOpen={true}>
       <div className="flex h-screen w-full">
@@ -103,30 +92,9 @@ const PipelineSettings = () => {
           <AppHeader />
           <div className="flex-1 bg-gradient-to-b from-slate-100 to-white p-6 overflow-y-auto">
             <div className="max-w-[1200px] mx-auto space-y-6">
-              <div className="flex items-center justify-between">
-                <h1 className="text-2xl font-bold text-gray-900">Customize Pipeline</h1>
-                <div className="space-x-2">
-                  <Button variant="outline" onClick={handleCancel}>
-                    Cancel
-                  </Button>
-                  <Button 
-                    onClick={handleSave}
-                    className="bg-green-500 hover:bg-green-600 text-white"
-                  >
-                    Save
-                  </Button>
-                </div>
-              </div>
-
-              <div className="space-y-2">
-                <label className="text-sm text-gray-600">Pipeline name</label>
-                <Input
-                  value={pipelineName}
-                  onChange={(e) => setPipelineName(e.target.value)}
-                  className="max-w-xs"
-                />
-              </div>
-
+              <PipelineSettingsHeader onSave={handleSave} onCancel={handleCancel} />
+              <PipelineNameInput value={pipelineName} onChange={setPipelineName} />
+              
               <div className="space-y-4">
                 <div className="flex justify-between items-center">
                   <h2 className="text-lg font-semibold text-gray-900">Stages</h2>
@@ -135,41 +103,13 @@ const PipelineSettings = () => {
                   </Button>
                 </div>
 
-                <DragDropContext onDragEnd={handleDragEnd}>
-                  <Droppable droppableId="stages" direction="horizontal">
-                    {(provided) => (
-                      <div
-                        ref={provided.innerRef}
-                        {...provided.droppableProps}
-                        className="flex gap-2 overflow-x-auto pb-4 min-h-[200px] w-full"
-                        style={{ whiteSpace: 'nowrap' }}
-                      >
-                        {stages.map((stage, index) => (
-                          <div key={stage.id} className="flex items-center">
-                            <div className="flex-none w-[210px]">
-                              <PipelineStageSettings
-                                id={stage.id}
-                                name={stage.name}
-                                index={index}
-                                onNameChange={handleStageNameChange}
-                                onDelete={handleStageDelete}
-                              />
-                            </div>
-                            {index < stages.length - 1 && (
-                              <button
-                                onClick={() => handleAddStageAtPosition(index)}
-                                className="flex-none mx-1 p-1 rounded-full hover:bg-gray-100 transition-colors"
-                              >
-                                <Plus className="w-5 h-5 text-gray-400 hover:text-gray-600" />
-                              </button>
-                            )}
-                          </div>
-                        ))}
-                        {provided.placeholder}
-                      </div>
-                    )}
-                  </Droppable>
-                </DragDropContext>
+                <PipelineStageList
+                  stages={stages}
+                  onStagesChange={setStages}
+                  onStageNameChange={handleStageNameChange}
+                  onStageDelete={handleStageDelete}
+                  onAddStageAtPosition={handleAddStageAtPosition}
+                />
               </div>
             </div>
           </div>
