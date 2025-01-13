@@ -7,7 +7,13 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import { Input } from "@/components/ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { useState } from "react";
 
 interface LostLeadModalProps {
@@ -17,12 +23,20 @@ interface LostLeadModalProps {
   leadName: string;
 }
 
+const LOST_REASONS = [
+  "Price too High",
+  "Lack of Urgency",
+  "Not a Good Fit",
+  "Competition Won",
+  "Scheduling Conflicts"
+] as const;
+
 export function LostLeadModal({ open, onOpenChange, onConfirm, leadName }: LostLeadModalProps) {
-  const [reason, setReason] = useState("");
+  const [reason, setReason] = useState<string>("");
   const [notes, setNotes] = useState("");
 
   const handleConfirm = () => {
-    if (!reason.trim()) return;
+    if (!reason) return;
     onConfirm(reason, notes);
     setReason("");
     setNotes("");
@@ -38,11 +52,18 @@ export function LostLeadModal({ open, onOpenChange, onConfirm, leadName }: LostL
         <div className="space-y-4 py-4">
           <div className="space-y-2">
             <label className="text-sm font-medium">Lost Reason *</label>
-            <Input
-              placeholder="Enter the reason this lead was lost"
-              value={reason}
-              onChange={(e) => setReason(e.target.value)}
-            />
+            <Select value={reason} onValueChange={setReason}>
+              <SelectTrigger>
+                <SelectValue placeholder="Select a reason" />
+              </SelectTrigger>
+              <SelectContent>
+                {LOST_REASONS.map((lostReason) => (
+                  <SelectItem key={lostReason} value={lostReason}>
+                    {lostReason}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           </div>
           <div className="space-y-2">
             <label className="text-sm font-medium">Additional Notes</label>
@@ -59,7 +80,7 @@ export function LostLeadModal({ open, onOpenChange, onConfirm, leadName }: LostL
             type="button"
             variant="destructive"
             onClick={handleConfirm}
-            disabled={!reason.trim()}
+            disabled={!reason}
           >
             Mark Lost
           </Button>
