@@ -1,9 +1,13 @@
 import { useState } from "react";
 import type { Lead } from "@/components/LeadCard";
-import { DropResult } from "react-beautiful-dnd";
+import type { DropResult } from "react-beautiful-dnd";
 
 export function useLeadsState(initialLeads: Lead[]) {
   const [leads, setLeads] = useState<Lead[]>(initialLeads);
+  const [movingLead, setMovingLead] = useState<{
+    lead: Lead;
+    sourceStage: string;
+  } | null>(null);
 
   const handleNewLead = (leadData: Omit<Lead, "id" | "createdAt" | "stageEnteredAt">) => {
     const newLead: Lead = {
@@ -36,18 +40,12 @@ export function useLeadsState(initialLeads: Lead[]) {
     // Create a new array without the moved lead
     const newLeads = leads.filter(l => l.id !== draggableId);
 
-    // If moving to lost column, mark as lost immediately
-    if (destination.droppableId === "lost") {
-      setLeads([
-        ...newLeads,
-        {
-          ...leadToMove,
-          stage: "lost",
-          stageEnteredAt: new Date(),
-          lostReason: "Marked as lost",
-          lostNotes: "Automatically marked as lost when moved to Lost column"
-        }
-      ]);
+    // If moving to lost column, show the modal
+    if (destination.droppableId === "lost" && source.droppableId !== "lost") {
+      setMovingLead({
+        lead: { ...leadToMove },
+        sourceStage: source.droppableId
+      });
       return;
     }
 
@@ -62,9 +60,35 @@ export function useLeadsState(initialLeads: Lead[]) {
     ]);
   };
 
+  const handleMarkAsLost = () => {
+    if (!movingLead) return;
+
+    setLeads(prevLeads => 
+      prevLeads.map(lead => 
+        lead.id === movingLead.lead.id
+          ? {
+              ...lead,
+              stage: "lost",
+              stageEnteredAt: new Date(),
+              lostReason: "Marked as lost",
+              lostNotes: "Marked as lost"
+            }
+          : lead
+      )
+    );
+    setMovingLead(null);
+  };
+
+  const handleCancelLost = () => {
+    setMovingLead(null);
+  };
+
   return {
     leads,
+    movingLead,
     handleNewLead,
     onDragEnd,
+    handleMarkAsLost,
+    handleCancelLost,
   };
 }
