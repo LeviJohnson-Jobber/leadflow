@@ -1,4 +1,4 @@
-import { Flame, Clock, Phone, Mail, AlertCircle } from "lucide-react";
+import { Flame, Clock, Phone, Mail, AlertCircle, XCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Draggable } from "react-beautiful-dnd";
 import { useState } from "react";
@@ -22,6 +22,8 @@ export interface Lead {
     lat: number;
     lng: number;
   };
+  lostReason?: string;
+  lostNotes?: string;
 }
 
 interface LeadCardProps {
@@ -38,6 +40,7 @@ export function LeadCard({ lead, className, index }: LeadCardProps) {
   );
   
   const isOverdue = daysInStage > 7;
+  const isLost = lead.stage === "lost";
 
   return (
     <>
@@ -65,14 +68,23 @@ export function LeadCard({ lead, className, index }: LeadCardProps) {
               
               <div className="text-sm text-gray-600 mb-2 truncate">{lead.service}</div>
               
-              <div className="flex items-center gap-2 text-sm text-gray-500 mb-2">
-                {lead.contactMethod === "phone" ? (
-                  <Phone className="w-4 h-4" />
-                ) : (
-                  <Mail className="w-4 h-4" />
-                )}
-                <span className="truncate">{lead.contactInfo}</span>
-              </div>
+              {isLost && lead.lostReason && (
+                <div className="flex items-center gap-2 text-sm text-red-600 mb-2">
+                  <XCircle className="w-4 h-4" />
+                  <span className="truncate">{lead.lostReason}</span>
+                </div>
+              )}
+
+              {!isLost && (
+                <div className="flex items-center gap-2 text-sm text-gray-500 mb-2">
+                  {lead.contactMethod === "phone" ? (
+                    <Phone className="w-4 h-4" />
+                  ) : (
+                    <Mail className="w-4 h-4" />
+                  )}
+                  <span className="truncate">{lead.contactInfo}</span>
+                </div>
+              )}
             </div>
             
             <div className="flex items-center gap-1 text-xs text-gray-400">

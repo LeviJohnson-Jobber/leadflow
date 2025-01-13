@@ -6,6 +6,7 @@ import type { Lead } from "@/components/LeadCard";
 import { DropResult } from "react-beautiful-dnd";
 import { PipelineHeader } from "@/components/PipelineHeader";
 import { PipelineGrid } from "@/components/PipelineGrid";
+import { LostLeadModal } from "@/components/LostLeadModal";
 
 // Get pipeline settings from localStorage
 const getPipelineSettings = () => {
@@ -184,6 +185,11 @@ const Index = () => {
     }
   ]);
 
+  const [movingLead, setMovingLead] = useState<{
+    lead: Lead;
+    sourceStage: string;
+  } | null>(null);
+
   const handleNewLead = (leadData: Omit<Lead, "id" | "createdAt" | "stageEnteredAt">) => {
     const newLead: Lead = {
       ...leadData,
@@ -212,6 +218,11 @@ const Index = () => {
     const lead = leads.find((l) => l.id === draggableId);
     if (!lead) return;
 
+    if (destination.droppableId === "lost" && source.droppableId !== "lost") {
+      setMovingLead({ lead, sourceStage: source.droppableId });
+      return;
+    }
+
     const newLeads = leads.filter((l) => l.id !== draggableId);
     const updatedLead = {
       ...lead,
@@ -220,6 +231,35 @@ const Index = () => {
     };
 
     setLeads([...newLeads, updatedLead]);
+  };
+
+  const handleMarkAsLost = (reason: string, notes: string) => {
+    if (!movingLead) return;
+
+    const newLeads = leads.filter((l) => l.id !== movingLead.lead.id);
+    const updatedLead = {
+      ...movingLead.lead,
+      stage: "lost",
+      stageEnteredAt: new Date(),
+      lostReason: reason,
+      lostNotes: notes,
+    };
+
+    setLeads([...newLeads, updatedLead]);
+    setMovingLead(null);
+  };
+
+  const handleCancelLost = () => {
+    if (!movingLead) return;
+
+    const newLeads = leads.filter((l) => l.id !== movingLead.lead.id);
+    const updatedLead = {
+      ...movingLead.lead,
+      stage: movingLead.sourceStage,
+    };
+
+    setLeads([...newLeads, updatedLead]);
+    setMovingLead(null);
   };
 
   return (
@@ -243,6 +283,12 @@ const Index = () => {
           </div>
         </div>
       </div>
+      <LostLeadModal
+        open={!!movingLead}
+        onOpenChange={(open) => !open && handleCancelLost()}
+        onConfirm={handleMarkAsLost}
+        leadName={movingLead?.lead.name || ""}
+      />
     </SidebarProvider>
   );
 };
