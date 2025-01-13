@@ -37,56 +37,65 @@ export function useLeadsState(initialLeads: Lead[]) {
     const lead = leads.find((l) => l.id === draggableId);
     if (!lead) return;
 
-    // If moving to lost column, store the original state and update immediately
+    // Handle moving to lost column
     if (destination.droppableId === "lost" && source.droppableId !== "lost") {
-      setMovingLead({ lead, sourceStage: source.droppableId });
-      const newLeads = leads.filter((l) => l.id !== draggableId);
-      const updatedLead = {
-        ...lead,
-        stage: "lost",
-        stageEnteredAt: new Date(),
-      };
-      setLeads([...newLeads, updatedLead]);
+      // Store original state before moving
+      setMovingLead({ 
+        lead: { ...lead }, // Create a copy of the lead
+        sourceStage: source.droppableId 
+      });
+      
+      // Move to lost immediately
+      setLeads(prevLeads => {
+        const newLeads = prevLeads.filter(l => l.id !== draggableId);
+        return [...newLeads, {
+          ...lead,
+          stage: "lost",
+          stageEnteredAt: new Date()
+        }];
+      });
       return;
     }
 
-    // For all other moves, update normally
-    const newLeads = leads.filter((l) => l.id !== draggableId);
-    const updatedLead = {
-      ...lead,
-      stage: destination.droppableId,
-      stageEnteredAt: new Date(),
-    };
-
-    setLeads([...newLeads, updatedLead]);
+    // Handle all other moves
+    setLeads(prevLeads => {
+      const newLeads = prevLeads.filter(l => l.id !== draggableId);
+      return [...newLeads, {
+        ...lead,
+        stage: destination.droppableId,
+        stageEnteredAt: new Date()
+      }];
+    });
   };
 
   const handleMarkAsLost = (reason: string, notes: string) => {
     if (!movingLead) return;
 
-    const newLeads = leads.filter((l) => l.id !== movingLead.lead.id);
-    const updatedLead = {
-      ...movingLead.lead,
-      stage: "lost",
-      stageEnteredAt: new Date(),
-      lostReason: reason,
-      lostNotes: notes,
-    };
-
-    setLeads([...newLeads, updatedLead]);
+    setLeads(prevLeads => {
+      const newLeads = prevLeads.filter(l => l.id !== movingLead.lead.id);
+      return [...newLeads, {
+        ...movingLead.lead,
+        stage: "lost",
+        stageEnteredAt: new Date(),
+        lostReason: reason,
+        lostNotes: notes
+      }];
+    });
+    
     setMovingLead(null);
   };
 
   const handleCancelLost = () => {
     if (!movingLead) return;
 
-    const newLeads = leads.filter((l) => l.id !== movingLead.lead.id);
-    const restoredLead = {
-      ...movingLead.lead,
-      stage: movingLead.sourceStage,
-    };
-
-    setLeads([...newLeads, restoredLead]);
+    setLeads(prevLeads => {
+      const newLeads = prevLeads.filter(l => l.id !== movingLead.lead.id);
+      return [...newLeads, {
+        ...movingLead.lead,
+        stage: movingLead.sourceStage
+      }];
+    });
+    
     setMovingLead(null);
   };
 
