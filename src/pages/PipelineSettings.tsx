@@ -14,7 +14,6 @@ interface PipelineStage {
   name: string;
 }
 
-// Use localStorage to persist pipeline settings
 const getPipelineSettings = () => {
   const stored = localStorage.getItem('pipelineSettings');
   if (stored) {
@@ -99,7 +98,10 @@ const PipelineSettings = () => {
                   <Button variant="outline" onClick={handleCancel}>
                     Cancel
                   </Button>
-                  <Button onClick={handleSave}>
+                  <Button 
+                    onClick={handleSave}
+                    className="bg-green-500 hover:bg-green-600 text-white"
+                  >
                     Save
                   </Button>
                 </div>
@@ -128,17 +130,19 @@ const PipelineSettings = () => {
                       <div
                         ref={provided.innerRef}
                         {...provided.droppableProps}
-                        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4"
+                        className="flex gap-4 overflow-x-auto pb-4 min-h-[200px] w-full"
+                        style={{ whiteSpace: 'nowrap' }}
                       >
                         {stages.map((stage, index) => (
-                          <PipelineStageSettings
-                            key={stage.id}
-                            id={stage.id}
-                            name={stage.name}
-                            index={index}
-                            onNameChange={handleStageNameChange}
-                            onDelete={handleStageDelete}
-                          />
+                          <div key={stage.id} className="flex-none w-[300px]">
+                            <PipelineStageSettings
+                              id={stage.id}
+                              name={stage.name}
+                              index={index}
+                              onNameChange={handleStageNameChange}
+                              onDelete={handleStageDelete}
+                            />
+                          </div>
                         ))}
                         {provided.placeholder}
                       </div>
