@@ -49,7 +49,8 @@ export function PipelineStageSettings({
                 Delete Stage
               </Button>
             ) : (
-              <div className="h-9" /> {/* Placeholder to maintain consistent height */}
+              // Placeholder to maintain consistent height
+              <div className="h-9" />
             )}
           </div>
         </div>
