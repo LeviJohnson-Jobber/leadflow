@@ -141,7 +141,7 @@ const PipelineSettings = () => {
                       <div
                         ref={provided.innerRef}
                         {...provided.droppableProps}
-                        className="flex gap-4 overflow-x-auto pb-4 min-h-[200px] w-full"
+                        className="flex gap-2 overflow-x-auto pb-4 min-h-[200px] w-full"
                         style={{ whiteSpace: 'nowrap' }}
                       >
                         {stages.map((stage, index) => (
@@ -158,7 +158,7 @@ const PipelineSettings = () => {
                             {index < stages.length - 1 && (
                               <button
                                 onClick={() => handleAddStageAtPosition(index)}
-                                className="flex-none mx-2 p-1 rounded-full hover:bg-gray-100 transition-colors"
+                                className="flex-none mx-1 p-1 rounded-full hover:bg-gray-100 transition-colors"
                               >
                                 <Plus className="w-5 h-5 text-gray-400 hover:text-gray-600" />
                               </button>
