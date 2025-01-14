@@ -1,7 +1,7 @@
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import { Phone, Mail, MapPin, Edit, FileEdit } from "lucide-react";
+import { Phone, Mail, MapPin } from "lucide-react";
 import type { Lead } from "./LeadCard";
 import { cn } from "@/lib/utils";
 import LeadMap from "./LeadMap";
@@ -87,15 +87,7 @@ export function LeadDetailsModal({ lead, open, onOpenChange }: LeadDetailsModalP
         <Separator />
 
         {/* Footer Actions */}
-        <div className="flex justify-end gap-3 p-6 pt-4">
-          <Button variant="outline" className="gap-2">
-            <FileEdit className="w-4 h-4" />
-            Add Note
-          </Button>
-          <Button className="gap-2">
-            <Edit className="w-4 h-4" />
-            Edit Lead
-          </Button>
+        <div className="p-6 pt-4">
         </div>
       </DialogContent>
     </Dialog>
