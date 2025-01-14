@@ -4,6 +4,7 @@ import { Separator } from "@/components/ui/separator";
 import { Phone, Mail, MapPin, Edit, FileEdit } from "lucide-react";
 import type { Lead } from "./LeadCard";
 import { cn } from "@/lib/utils";
+import LeadMap from "./LeadMap";
 
 interface LeadDetailsModalProps {
   lead: Lead | null;
@@ -50,6 +51,11 @@ export function LeadDetailsModal({ lead, open, onOpenChange }: LeadDetailsModalP
               </div>
             </div>
           </div>
+
+          {/* Map */}
+          {lead.location && (
+            <LeadMap location={lead.location} />
+          )}
 
           {/* Service Details */}
           <div>
