@@ -1,8 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import mapboxgl from 'mapbox-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
-import { Button } from './ui/button';
-import { Calendar } from 'lucide-react';
 
 interface LeadMapProps {
   location: {
@@ -48,22 +46,13 @@ const LeadMap = ({ location }: LeadMapProps) => {
     };
   }, [location]);
 
-  const handleSchedule = () => {
-    // TODO: Implement scheduling functionality
-    console.log('Schedule appointment clicked');
-  };
-
   return (
     <div className="space-y-4">
       <div className="relative h-[200px] rounded-lg overflow-hidden">
         <div ref={mapContainer} className="absolute inset-0" />
       </div>
-      <div className="flex items-center justify-between">
+      <div>
         <p className="text-sm text-gray-600">{location.address}</p>
-        <Button onClick={handleSchedule} className="gap-2">
-          <Calendar className="w-4 h-4" />
-          Schedule Visit
-        </Button>
       </div>
     </div>
   );
