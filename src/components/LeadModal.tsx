@@ -1,7 +1,7 @@
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { LostLeadModal } from "./LostLeadModal";
-import { LeadMap } from "./LeadMap";
+import LeadMap from "./LeadMap";
 import { useState } from "react";
 import { Flame, Clock, Phone, Mail, AlertCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
