@@ -1,7 +1,7 @@
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import { X, Phone, Mail, MapPin, Edit, FileEdit } from "lucide-react";
+import { Phone, Mail, MapPin, Edit, FileEdit } from "lucide-react";
 import type { Lead } from "./LeadCard";
 import { cn } from "@/lib/utils";
 
@@ -20,14 +20,6 @@ export function LeadDetailsModal({ lead, open, onOpenChange }: LeadDetailsModalP
         {/* Header */}
         <div className="flex items-center justify-between p-6 pb-2">
           <h2 className="text-xl font-semibold text-gray-900">{lead.name}</h2>
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={() => onOpenChange(false)}
-            className="h-8 w-8"
-          >
-            <X className="h-4 w-4" />
-          </Button>
         </div>
 
         <Separator />
