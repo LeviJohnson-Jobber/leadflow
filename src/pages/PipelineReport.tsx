@@ -11,6 +11,9 @@ import {
   CartesianGrid,
   Legend,
   ResponsiveContainer,
+  BarChart,
+  LineChart,
+  Tooltip,
 } from "recharts";
 
 type StageData = {
@@ -67,21 +70,19 @@ const PipelineReport = () => {
           <h2 className="text-lg font-semibold mb-4">Leads by Stage</h2>
           <div className="h-[400px]">
             <ChartContainer config={chartConfig}>
-              <ResponsiveContainer>
-                <Bar data={data} dataKey="count">
-                  <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="name" />
-                  <YAxis />
-                  <ChartTooltip />
-                  <Legend />
-                  <Bar
-                    dataKey="count"
-                    fill="var(--color-count)"
-                    radius={[4, 4, 0, 0]}
-                    name="Number of Leads"
-                  />
-                </Bar>
-              </ResponsiveContainer>
+              <BarChart data={data}>
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="name" />
+                <YAxis />
+                <Tooltip />
+                <Legend />
+                <Bar
+                  dataKey="count"
+                  fill="var(--color-count)"
+                  radius={[4, 4, 0, 0]}
+                  name="Number of Leads"
+                />
+              </BarChart>
             </ChartContainer>
           </div>
         </Card>
@@ -90,23 +91,21 @@ const PipelineReport = () => {
           <h2 className="text-lg font-semibold mb-4">Conversion Rate by Stage</h2>
           <div className="h-[400px]">
             <ChartContainer config={chartConfig}>
-              <ResponsiveContainer>
-                <Line data={data}>
-                  <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="name" />
-                  <YAxis />
-                  <ChartTooltip />
-                  <Legend />
-                  <Line
-                    type="monotone"
-                    dataKey="conversionRate"
-                    stroke="var(--color-conversionRate)"
-                    name="Conversion Rate (%)"
-                    strokeWidth={2}
-                    dot={{ strokeWidth: 2 }}
-                  />
-                </Line>
-              </ResponsiveContainer>
+              <LineChart data={data}>
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="name" />
+                <YAxis />
+                <Tooltip />
+                <Legend />
+                <Line
+                  type="monotone"
+                  dataKey="conversionRate"
+                  stroke="var(--color-conversionRate)"
+                  name="Conversion Rate (%)"
+                  strokeWidth={2}
+                  dot={{ strokeWidth: 2 }}
+                />
+              </LineChart>
             </ChartContainer>
           </div>
         </Card>
