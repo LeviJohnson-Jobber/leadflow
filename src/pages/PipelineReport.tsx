@@ -7,11 +7,19 @@ import { AppSidebar } from "@/components/AppSidebar";
 import { SidebarProvider } from "@/components/ui/sidebar";
 
 const data = [
-  { stage: 'New', count: 2, conversionRate: 85 },
-  { stage: 'Contacted', count: 3, conversionRate: 75 },
+  { stage: 'New', count: 2, conversionRate: 30 },
+  { stage: 'Contacted', count: 3, conversionRate: 45 },
   { stage: 'Follow-Up', count: 4, conversionRate: 60 },
-  { stage: 'Quoted', count: 3, conversionRate: 45 },
-  { stage: 'Negotiation', count: 2, conversionRate: 30 },
+  { stage: 'Quoted', count: 3, conversionRate: 75 },
+  { stage: 'Negotiation', count: 2, conversionRate: 90 },
+];
+
+const valueData = [
+  { stage: 'New', value: 50000 },
+  { stage: 'Contacted', value: 75000 },
+  { stage: 'Follow-Up', value: 120000 },
+  { stage: 'Quoted', value: 90000 },
+  { stage: 'Negotiation', value: 180000 },
 ];
 
 const PipelineReport = () => {
@@ -52,6 +60,22 @@ const PipelineReport = () => {
                   </ResponsiveContainer>
                 </div>
               </Card>
+
+              <Card className="p-6">
+                <h2 className="text-lg font-semibold mb-4">Total Value by Stage</h2>
+                <div className="h-[400px]">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <BarChart data={valueData}>
+                      <CartesianGrid strokeDasharray="3 3" />
+                      <XAxis dataKey="stage" />
+                      <YAxis />
+                      <Tooltip formatter={(value) => `$${value.toLocaleString()}`} />
+                      <Legend />
+                      <Bar dataKey="value" fill="#22c55e" name="Total Value ($)" />
+                    </BarChart>
+                  </ResponsiveContainer>
+                </div>
+              </Card>
               
               <Card className="p-6">
                 <h2 className="text-lg font-semibold mb-4">Conversion Rate by Stage</h2>
@@ -61,7 +85,7 @@ const PipelineReport = () => {
                       <CartesianGrid strokeDasharray="3 3" />
                       <XAxis dataKey="stage" />
                       <YAxis />
-                      <Tooltip />
+                      <Tooltip formatter={(value) => `${value}%`} />
                       <Legend />
                       <Line 
                         type="monotone" 
