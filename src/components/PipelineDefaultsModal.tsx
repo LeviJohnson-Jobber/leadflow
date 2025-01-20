@@ -28,51 +28,54 @@ export function PipelineDefaultsModal({
   const queryClient = useQueryClient();
 
   useEffect(() => {
-    // Load saved values from localStorage
-    const savedHotLeadValue = localStorage.getItem('hotLeadValue');
-    if (savedHotLeadValue) {
-      setHotLeadValue(Number(savedHotLeadValue));
-    }
+    if (open) {
+      // Load saved values from localStorage only when modal opens
+      const savedHotLeadValue = localStorage.getItem('hotLeadValue');
+      if (savedHotLeadValue) {
+        setHotLeadValue(Number(savedHotLeadValue));
+      }
 
-    const savedStageMaxDays = localStorage.getItem('stageMaxDays');
-    if (savedStageMaxDays) {
-      setStageMaxDays(JSON.parse(savedStageMaxDays));
-    } else {
-      // Set default values for stages
-      const defaults: Record<string, number> = {};
-      stages.forEach(stage => {
-        if (stage.name.toLowerCase() !== 'won' && stage.name.toLowerCase() !== 'lost') {
-          switch (stage.name.toLowerCase()) {
-            case 'new':
-              defaults[stage.id] = 2;
-              break;
-            case 'contacted':
-              defaults[stage.id] = 5;
-              break;
-            case 'follow-up':
-              defaults[stage.id] = 7;
-              break;
-            case 'quoted':
-              defaults[stage.id] = 14;
-              break;
-            case 'negotiation':
-              defaults[stage.id] = 10;
-              break;
-            default:
-              defaults[stage.id] = 7;
+      const savedStageMaxDays = localStorage.getItem('stageMaxDays');
+      if (savedStageMaxDays) {
+        setStageMaxDays(JSON.parse(savedStageMaxDays));
+      } else {
+        // Set default values for stages
+        const defaults: Record<string, number> = {};
+        stages.forEach(stage => {
+          if (stage.name.toLowerCase() !== 'won' && stage.name.toLowerCase() !== 'lost') {
+            switch (stage.name.toLowerCase()) {
+              case 'new':
+                defaults[stage.id] = 2;
+                break;
+              case 'contacted':
+                defaults[stage.id] = 5;
+                break;
+              case 'follow-up':
+                defaults[stage.id] = 7;
+                break;
+              case 'quoted':
+                defaults[stage.id] = 14;
+                break;
+              case 'negotiation':
+                defaults[stage.id] = 10;
+                break;
+              default:
+                defaults[stage.id] = 7;
+            }
           }
-        }
-      });
-      setStageMaxDays(defaults);
+        });
+        setStageMaxDays(defaults);
+      }
     }
-  }, [stages]);
+  }, [open, stages]);
 
   const handleSave = () => {
     localStorage.setItem('hotLeadValue', hotLeadValue.toString());
     localStorage.setItem('stageMaxDays', JSON.stringify(stageMaxDays));
     
-    // Invalidate the query to trigger a refresh
+    // Invalidate and refetch the query immediately
     queryClient.invalidateQueries({ queryKey: ['pipelineDefaults'] });
+    queryClient.refetchQueries({ queryKey: ['pipelineDefaults'] });
     
     toast.success("Pipeline defaults saved successfully");
     onOpenChange(false);

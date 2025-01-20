@@ -34,9 +34,14 @@ interface LeadCardProps {
 }
 
 const getDefaults = () => {
-  const hotLeadValue = Number(localStorage.getItem('hotLeadValue')) || 20000;
-  const stageMaxDays = JSON.parse(localStorage.getItem('stageMaxDays') || '{}');
-  return { hotLeadValue, stageMaxDays };
+  try {
+    const hotLeadValue = Number(localStorage.getItem('hotLeadValue')) || 20000;
+    const stageMaxDays = JSON.parse(localStorage.getItem('stageMaxDays') || '{}');
+    return { hotLeadValue, stageMaxDays };
+  } catch (error) {
+    console.error('Error reading defaults:', error);
+    return { hotLeadValue: 20000, stageMaxDays: {} };
+  }
 };
 
 export function LeadCard({ lead, className, index }: LeadCardProps) {
@@ -45,8 +50,8 @@ export function LeadCard({ lead, className, index }: LeadCardProps) {
   const { data: defaults } = useQuery({
     queryKey: ['pipelineDefaults'],
     queryFn: getDefaults,
-    refetchOnWindowFocus: true,
-    refetchInterval: 1000, // Poll every second
+    staleTime: 1000, // Consider data fresh for 1 second
+    cacheTime: 5000, // Keep in cache for 5 seconds
   });
 
   const daysInStage = Math.floor(
