@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { useState, useEffect } from "react";
 import { toast } from "sonner";
 import { useQueryClient } from "@tanstack/react-query";
+import { useNavigate } from "react-router-dom";
 
 interface PipelineStage {
   id: string;
@@ -26,10 +27,10 @@ export function PipelineDefaultsModal({
   const [hotLeadValue, setHotLeadValue] = useState(20000);
   const [stageMaxDays, setStageMaxDays] = useState<Record<string, number>>({});
   const queryClient = useQueryClient();
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (open) {
-      // Load saved values from localStorage only when modal opens
       const savedHotLeadValue = localStorage.getItem('hotLeadValue');
       if (savedHotLeadValue) {
         setHotLeadValue(Number(savedHotLeadValue));
@@ -39,7 +40,6 @@ export function PipelineDefaultsModal({
       if (savedStageMaxDays) {
         setStageMaxDays(JSON.parse(savedStageMaxDays));
       } else {
-        // Set default values for stages
         const defaults: Record<string, number> = {};
         stages.forEach(stage => {
           if (stage.name.toLowerCase() !== 'won' && stage.name.toLowerCase() !== 'lost') {
@@ -73,16 +73,21 @@ export function PipelineDefaultsModal({
     localStorage.setItem('hotLeadValue', hotLeadValue.toString());
     localStorage.setItem('stageMaxDays', JSON.stringify(stageMaxDays));
     
-    // Invalidate and refetch the query immediately
     queryClient.invalidateQueries({ queryKey: ['pipelineDefaults'] });
     queryClient.refetchQueries({ queryKey: ['pipelineDefaults'] });
     
     toast.success("Pipeline defaults saved successfully");
     onOpenChange(false);
+    navigate(0); // This will refresh the page
+  };
+
+  const handleClose = () => {
+    onOpenChange(false);
+    navigate(0); // This will refresh the page
   };
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog open={open} onOpenChange={handleClose}>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
           <DialogTitle>Pipeline Defaults</DialogTitle>
