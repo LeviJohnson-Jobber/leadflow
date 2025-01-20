@@ -1,7 +1,7 @@
-import { DollarSign } from "lucide-react";
+import { DollarSign, Flame } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Draggable } from "react-beautiful-dnd";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { LeadDetailsModal } from "./LeadDetailsModal";
 
 export interface Lead {
@@ -34,12 +34,28 @@ interface LeadCardProps {
 
 export function LeadCard({ lead, className, index }: LeadCardProps) {
   const [showDetails, setShowDetails] = useState(false);
+  const [isHot, setIsHot] = useState(false);
+  const [isOverdue, setIsOverdue] = useState(false);
   
+  useEffect(() => {
+    // Check if lead is hot based on stored hot lead value
+    const hotLeadValue = Number(localStorage.getItem('hotLeadValue')) || 20000;
+    setIsHot(lead.estimatedValue ? lead.estimatedValue >= hotLeadValue : false);
+
+    // Check if lead is overdue based on stored stage max days
+    const stageMaxDays = JSON.parse(localStorage.getItem('stageMaxDays') || '{}');
+    const daysInStage = Math.floor(
+      (new Date().getTime() - new Date(lead.stageEnteredAt).getTime()) / (1000 * 60 * 60 * 24)
+    );
+    
+    const maxDaysForStage = stageMaxDays[lead.stage];
+    setIsOverdue(maxDaysForStage ? daysInStage > maxDaysForStage : false);
+  }, [lead.estimatedValue, lead.stage, lead.stageEnteredAt]);
+
   const daysInStage = Math.floor(
     (new Date().getTime() - new Date(lead.stageEnteredAt).getTime()) / (1000 * 60 * 60 * 24)
   );
-  
-  const isOverdue = daysInStage > 7;
+
   const isLost = lead.stage === "lost";
 
   return (
@@ -60,6 +76,7 @@ export function LeadCard({ lead, className, index }: LeadCardProps) {
             <div>
               <div className="flex justify-between items-start mb-2">
                 <h3 className="font-medium text-gray-900 truncate max-w-[80%]">{lead.name}</h3>
+                {isHot && <Flame className="w-4 h-4 text-orange-500" />}
               </div>
               
               <div className="text-sm text-gray-600 mb-2 truncate">{lead.service}</div>
