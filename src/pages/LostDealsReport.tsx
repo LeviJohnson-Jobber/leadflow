@@ -5,7 +5,7 @@ import { AppHeader } from "@/components/AppHeader";
 import { AppSidebar } from "@/components/AppSidebar";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { ChartContainer, ChartTooltip } from "@/components/ui/chart";
-import { Bar, Pie, Cell, XAxis, YAxis, CartesianGrid, Legend } from "recharts";
+import { Bar, Pie, Cell, XAxis, YAxis, CartesianGrid, Legend, ResponsiveContainer } from "recharts";
 
 const lostDeals = [
   {
@@ -79,32 +79,26 @@ const LostDealsReport = () => {
               </div>
             </div>
             
-            <Card className="p-6 mb-6">
-              <h3 className="text-lg font-semibold mb-2">Total Lost Value</h3>
-              <p className="text-3xl font-bold text-red-600">
-                ${totalValue.toLocaleString()}
-              </p>
-            </Card>
-
             <div className="grid md:grid-cols-2 gap-6 mb-6">
               <Card className="p-6">
                 <h2 className="text-lg font-semibold mb-4">Lost Reasons Distribution</h2>
                 <div className="h-[300px]">
                   <ChartContainer config={chartConfig}>
-                    <Pie
-                      data={reasonData}
-                      cx="50%"
-                      cy="50%"
-                      labelLine={false}
-                      label={({ name, percent }) => `${name} (${(percent * 100).toFixed(0)}%)`}
-                      outerRadius={80}
-                      dataKey="value"
-                    >
-                      {reasonData.map((entry, index) => (
-                        <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                      ))}
-                    </Pie>
-                    <ChartTooltip />
+                    <ResponsiveContainer>
+                      <Pie
+                        data={reasonData}
+                        cx="50%"
+                        cy="50%"
+                        labelLine={false}
+                        label={({ name, percent }) => `${name} (${(percent * 100).toFixed(0)}%)`}
+                        outerRadius={80}
+                        dataKey="value"
+                      >
+                        {reasonData.map((entry, index) => (
+                          <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                        ))}
+                      </Pie>
+                    </ResponsiveContainer>
                   </ChartContainer>
                 </div>
               </Card>
@@ -113,27 +107,21 @@ const LostDealsReport = () => {
                 <h2 className="text-lg font-semibold mb-4">Lost Value by Service</h2>
                 <div className="h-[300px]">
                   <ChartContainer config={chartConfig}>
-                    <Bar
-                      data={lostDeals}
-                      margin={{
-                        top: 5,
-                        right: 30,
-                        left: 20,
-                        bottom: 5,
-                      }}
-                    >
-                      <CartesianGrid strokeDasharray="3 3" />
-                      <XAxis dataKey="service" />
-                      <YAxis />
-                      <ChartTooltip />
-                      <Legend />
-                      <Bar
-                        dataKey="value"
-                        fill="var(--color-value)"
-                        radius={[4, 4, 0, 0]}
-                        name="Lost Value ($)"
-                      />
-                    </Bar>
+                    <ResponsiveContainer>
+                      <Bar data={lostDeals}>
+                        <CartesianGrid strokeDasharray="3 3" />
+                        <XAxis dataKey="service" />
+                        <YAxis />
+                        <ChartTooltip />
+                        <Legend />
+                        <Bar
+                          dataKey="value"
+                          fill="var(--color-value)"
+                          radius={[4, 4, 0, 0]}
+                          name="Lost Value ($)"
+                        />
+                      </Bar>
+                    </ResponsiveContainer>
                   </ChartContainer>
                 </div>
               </Card>

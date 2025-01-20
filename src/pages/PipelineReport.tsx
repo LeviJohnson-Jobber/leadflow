@@ -5,7 +5,7 @@ import { AppHeader } from "@/components/AppHeader";
 import { AppSidebar } from "@/components/AppSidebar";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { ChartContainer, ChartTooltip } from "@/components/ui/chart";
-import { Bar, Line, XAxis, YAxis, CartesianGrid, Legend } from "recharts";
+import { Bar, Line, XAxis, YAxis, CartesianGrid, Legend, ResponsiveContainer } from "recharts";
 
 const data = [
   { stage: 'New', count: 2, conversionRate: 85 },
@@ -59,27 +59,21 @@ const PipelineReport = () => {
                 <h2 className="text-lg font-semibold mb-4">Leads by Stage</h2>
                 <div className="h-[400px]">
                   <ChartContainer config={chartConfig}>
-                    <Bar
-                      data={data}
-                      margin={{
-                        top: 5,
-                        right: 30,
-                        left: 20,
-                        bottom: 5,
-                      }}
-                    >
-                      <CartesianGrid strokeDasharray="3 3" />
-                      <XAxis dataKey="stage" />
-                      <YAxis />
-                      <ChartTooltip />
-                      <Legend />
-                      <Bar
-                        dataKey="count"
-                        fill="var(--color-count)"
-                        radius={[4, 4, 0, 0]}
-                        name="Number of Leads"
-                      />
-                    </Bar>
+                    <ResponsiveContainer>
+                      <Bar data={data}>
+                        <CartesianGrid strokeDasharray="3 3" />
+                        <XAxis dataKey="stage" />
+                        <YAxis />
+                        <ChartTooltip />
+                        <Legend />
+                        <Bar
+                          dataKey="count"
+                          fill="var(--color-count)"
+                          radius={[4, 4, 0, 0]}
+                          name="Number of Leads"
+                        />
+                      </Bar>
+                    </ResponsiveContainer>
                   </ChartContainer>
                 </div>
               </Card>
@@ -88,29 +82,23 @@ const PipelineReport = () => {
                 <h2 className="text-lg font-semibold mb-4">Conversion Rate by Stage</h2>
                 <div className="h-[400px]">
                   <ChartContainer config={chartConfig}>
-                    <Line
-                      data={data}
-                      margin={{
-                        top: 5,
-                        right: 30,
-                        left: 20,
-                        bottom: 5,
-                      }}
-                    >
-                      <CartesianGrid strokeDasharray="3 3" />
-                      <XAxis dataKey="stage" />
-                      <YAxis />
-                      <ChartTooltip />
-                      <Legend />
-                      <Line
-                        type="monotone"
-                        dataKey="conversionRate"
-                        stroke="var(--color-conversionRate)"
-                        name="Conversion Rate (%)"
-                        strokeWidth={2}
-                        dot={{ strokeWidth: 2 }}
-                      />
-                    </Line>
+                    <ResponsiveContainer>
+                      <Line data={data}>
+                        <CartesianGrid strokeDasharray="3 3" />
+                        <XAxis dataKey="stage" />
+                        <YAxis />
+                        <ChartTooltip />
+                        <Legend />
+                        <Line
+                          type="monotone"
+                          dataKey="conversionRate"
+                          stroke="var(--color-conversionRate)"
+                          name="Conversion Rate (%)"
+                          strokeWidth={2}
+                          dot={{ strokeWidth: 2 }}
+                        />
+                      </Line>
+                    </ResponsiveContainer>
                   </ChartContainer>
                 </div>
               </Card>

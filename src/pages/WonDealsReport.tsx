@@ -5,7 +5,7 @@ import { AppHeader } from "@/components/AppHeader";
 import { AppSidebar } from "@/components/AppSidebar";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { ChartContainer, ChartTooltip } from "@/components/ui/chart";
-import { Bar, XAxis, YAxis, CartesianGrid, Legend } from "recharts";
+import { Bar, XAxis, YAxis, CartesianGrid, Legend, ResponsiveContainer } from "recharts";
 
 const wonDeals = [
   {
@@ -91,27 +91,21 @@ const WonDealsReport = () => {
               <h2 className="text-lg font-semibold mb-4">Value by Service</h2>
               <div className="h-[400px]">
                 <ChartContainer config={chartConfig}>
-                  <Bar
-                    data={valueByService}
-                    margin={{
-                      top: 5,
-                      right: 30,
-                      left: 20,
-                      bottom: 5,
-                    }}
-                  >
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="service" />
-                    <YAxis />
-                    <ChartTooltip />
-                    <Legend />
-                    <Bar
-                      dataKey="value"
-                      fill="var(--color-value)"
-                      radius={[4, 4, 0, 0]}
-                      name="Deal Value ($)"
-                    />
-                  </Bar>
+                  <ResponsiveContainer>
+                    <Bar data={valueByService}>
+                      <CartesianGrid strokeDasharray="3 3" />
+                      <XAxis dataKey="service" />
+                      <YAxis />
+                      <ChartTooltip />
+                      <Legend />
+                      <Bar
+                        dataKey="value"
+                        fill="var(--color-value)"
+                        radius={[4, 4, 0, 0]}
+                        name="Deal Value ($)"
+                      />
+                    </Bar>
+                  </ResponsiveContainer>
                 </ChartContainer>
               </div>
             </Card>
