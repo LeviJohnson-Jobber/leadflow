@@ -12,8 +12,6 @@ const data = [
   { stage: 'Follow-Up', count: 4, conversionRate: 60 },
   { stage: 'Quoted', count: 3, conversionRate: 45 },
   { stage: 'Negotiation', count: 2, conversionRate: 30 },
-  { stage: 'Won', count: 3, conversionRate: 100 },
-  { stage: 'Lost', count: 4, conversionRate: 0 },
 ];
 
 const PipelineReport = () => {
