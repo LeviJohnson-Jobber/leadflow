@@ -204,6 +204,7 @@ const Index = () => {
               <PipelineHeader 
                 pipelineName={pipelineSettings.name}
                 onLeadCreate={handleNewLead}
+                stages={pipelineSettings.stages}
               />
               <PipelineGrid 
                 stages={pipelineSettings.stages}
