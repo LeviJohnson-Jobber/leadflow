@@ -51,7 +51,7 @@ export function LeadCard({ lead, className, index }: LeadCardProps) {
     queryKey: ['pipelineDefaults'],
     queryFn: getDefaults,
     staleTime: 1000, // Consider data fresh for 1 second
-    cacheTime: 5000, // Keep in cache for 5 seconds
+    gcTime: 5000, // Keep in cache for 5 seconds (formerly cacheTime)
   });
 
   const daysInStage = Math.floor(
