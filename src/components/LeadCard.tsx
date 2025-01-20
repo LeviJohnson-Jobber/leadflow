@@ -30,6 +30,7 @@ interface LeadCardProps {
   lead: Lead;
   className?: string;
   index: number;
+  onDefaultsChange?: () => void;
 }
 
 export function LeadCard({ lead, className, index }: LeadCardProps) {
@@ -38,18 +39,38 @@ export function LeadCard({ lead, className, index }: LeadCardProps) {
   const [isOverdue, setIsOverdue] = useState(false);
   
   useEffect(() => {
-    // Check if lead is hot based on stored hot lead value
-    const hotLeadValue = Number(localStorage.getItem('hotLeadValue')) || 20000;
-    setIsHot(lead.estimatedValue ? lead.estimatedValue >= hotLeadValue : false);
+    const checkStatus = () => {
+      // Check if lead is hot based on stored hot lead value
+      const hotLeadValue = Number(localStorage.getItem('hotLeadValue')) || 20000;
+      setIsHot(lead.estimatedValue ? lead.estimatedValue >= hotLeadValue : false);
 
-    // Check if lead is overdue based on stored stage max days
-    const stageMaxDays = JSON.parse(localStorage.getItem('stageMaxDays') || '{}');
-    const daysInStage = Math.floor(
-      (new Date().getTime() - new Date(lead.stageEnteredAt).getTime()) / (1000 * 60 * 60 * 24)
-    );
+      // Check if lead is overdue based on stored stage max days
+      const stageMaxDays = JSON.parse(localStorage.getItem('stageMaxDays') || '{}');
+      const daysInStage = Math.floor(
+        (new Date().getTime() - new Date(lead.stageEnteredAt).getTime()) / (1000 * 60 * 60 * 24)
+      );
+      
+      const maxDaysForStage = stageMaxDays[lead.stage];
+      setIsOverdue(maxDaysForStage ? daysInStage > maxDaysForStage : false);
+    };
+
+    // Check status initially
+    checkStatus();
+
+    // Add storage event listener
+    const handleStorageChange = () => {
+      checkStatus();
+    };
+
+    window.addEventListener('storage', handleStorageChange);
     
-    const maxDaysForStage = stageMaxDays[lead.stage];
-    setIsOverdue(maxDaysForStage ? daysInStage > maxDaysForStage : false);
+    // Also listen for custom event for same-window updates
+    window.addEventListener('defaultsUpdated', handleStorageChange);
+
+    return () => {
+      window.removeEventListener('storage', handleStorageChange);
+      window.removeEventListener('defaultsUpdated', handleStorageChange);
+    };
   }, [lead.estimatedValue, lead.stage, lead.stageEnteredAt]);
 
   const daysInStage = Math.floor(

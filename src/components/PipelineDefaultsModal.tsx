@@ -68,6 +68,10 @@ export function PipelineDefaultsModal({
   const handleSave = () => {
     localStorage.setItem('hotLeadValue', hotLeadValue.toString());
     localStorage.setItem('stageMaxDays', JSON.stringify(stageMaxDays));
+    
+    // Dispatch custom event to notify components of the update
+    window.dispatchEvent(new Event('defaultsUpdated'));
+    
     toast.success("Pipeline defaults saved successfully");
     onOpenChange(false);
   };
