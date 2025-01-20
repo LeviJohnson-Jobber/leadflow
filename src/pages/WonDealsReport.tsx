@@ -5,7 +5,15 @@ import { AppHeader } from "@/components/AppHeader";
 import { AppSidebar } from "@/components/AppSidebar";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { ChartContainer, ChartTooltip } from "@/components/ui/chart";
-import { Bar, XAxis, YAxis, CartesianGrid, Legend, ResponsiveContainer } from "recharts";
+import { 
+  Bar, 
+  XAxis, 
+  YAxis, 
+  CartesianGrid, 
+  Legend, 
+  ResponsiveContainer,
+  BarChart
+} from "recharts";
 
 const wonDeals = [
   {
@@ -91,8 +99,8 @@ const WonDealsReport = () => {
               <h2 className="text-lg font-semibold mb-4">Value by Service</h2>
               <div className="h-[400px]">
                 <ChartContainer config={chartConfig}>
-                  <ResponsiveContainer>
-                    <Bar data={valueByService} dataKey="value">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <BarChart data={valueByService}>
                       <CartesianGrid strokeDasharray="3 3" />
                       <XAxis dataKey="service" />
                       <YAxis />
@@ -104,7 +112,7 @@ const WonDealsReport = () => {
                         radius={[4, 4, 0, 0]}
                         name="Deal Value ($)"
                       />
-                    </Bar>
+                    </BarChart>
                   </ResponsiveContainer>
                 </ChartContainer>
               </div>
