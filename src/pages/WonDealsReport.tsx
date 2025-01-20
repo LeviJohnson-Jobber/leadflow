@@ -92,7 +92,7 @@ const WonDealsReport = () => {
               <div className="h-[400px]">
                 <ChartContainer config={chartConfig}>
                   <ResponsiveContainer>
-                    <Bar data={valueByService}>
+                    <Bar data={valueByService} dataKey="value">
                       <CartesianGrid strokeDasharray="3 3" />
                       <XAxis dataKey="service" />
                       <YAxis />

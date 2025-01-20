@@ -60,7 +60,7 @@ const PipelineReport = () => {
                 <div className="h-[400px]">
                   <ChartContainer config={chartConfig}>
                     <ResponsiveContainer>
-                      <Bar data={data}>
+                      <Bar data={data} dataKey="count">
                         <CartesianGrid strokeDasharray="3 3" />
                         <XAxis dataKey="stage" />
                         <YAxis />

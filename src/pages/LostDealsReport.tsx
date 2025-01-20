@@ -84,21 +84,19 @@ const LostDealsReport = () => {
                 <h2 className="text-lg font-semibold mb-4">Lost Reasons Distribution</h2>
                 <div className="h-[300px]">
                   <ChartContainer config={chartConfig}>
-                    <ResponsiveContainer>
-                      <Pie
-                        data={reasonData}
-                        cx="50%"
-                        cy="50%"
-                        labelLine={false}
-                        label={({ name, percent }) => `${name} (${(percent * 100).toFixed(0)}%)`}
-                        outerRadius={80}
-                        dataKey="value"
-                      >
-                        {reasonData.map((entry, index) => (
-                          <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                        ))}
-                      </Pie>
-                    </ResponsiveContainer>
+                    <Pie
+                      data={reasonData}
+                      dataKey="value"
+                      cx="50%"
+                      cy="50%"
+                      labelLine={false}
+                      label={({ name, percent }) => `${name} (${(percent * 100).toFixed(0)}%)`}
+                      outerRadius={80}
+                    >
+                      {reasonData.map((entry, index) => (
+                        <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                      ))}
+                    </Pie>
                   </ChartContainer>
                 </div>
               </Card>
@@ -108,7 +106,7 @@ const LostDealsReport = () => {
                 <div className="h-[300px]">
                   <ChartContainer config={chartConfig}>
                     <ResponsiveContainer>
-                      <Bar data={lostDeals}>
+                      <Bar data={lostDeals} dataKey="value">
                         <CartesianGrid strokeDasharray="3 3" />
                         <XAxis dataKey="service" />
                         <YAxis />
