@@ -8,17 +8,15 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 
-// Define the Lead type
 interface Lead {
   id: string;
   name: string;
-  contactMethod: "phone" | "email";
-  contactInfo: string;
+  phone: string;
+  email: string;
   service: string;
-  isHot: boolean;
+  estimatedValue?: number;
   stage: string;
   assignedTo: string;
   createdAt: string;
@@ -32,10 +30,10 @@ export function NewLeadDialog({
 }) {
   const form = useForm<{
     name: string;
-    contactMethod: "phone" | "email";
-    contactInfo: string;
+    phone: string;
+    email: string;
     service: string;
-    isHot: boolean;
+    estimatedValue?: number;
   }>();
 
   const onSubmit = (data: any) => {
@@ -61,27 +59,27 @@ export function NewLeadDialog({
               <Input {...form.register("name")} required />
             </div>
             <div>
-              <Label>Contact Method</Label>
-              <select 
-                {...form.register("contactMethod")} 
-                required
-                className="w-full rounded-md border border-input bg-background px-3 py-2"
-              >
-                <option value="phone">Phone</option>
-                <option value="email">Email</option>
-              </select>
+              <Label>Phone Number</Label>
+              <Input {...form.register("phone")} type="tel" required />
             </div>
             <div>
-              <Label>Contact Info</Label>
-              <Input {...form.register("contactInfo")} required />
+              <Label>Email</Label>
+              <Input {...form.register("email")} type="email" required />
             </div>
             <div>
               <Label>Service</Label>
               <Input {...form.register("service")} required />
             </div>
-            <div className="flex items-center space-x-2">
-              <Checkbox {...form.register("isHot")} id="isHot" />
-              <Label htmlFor="isHot">Hot Lead</Label>
+            <div>
+              <Label>Estimated Value ($)</Label>
+              <Input 
+                {...form.register("estimatedValue", { 
+                  valueAsNumber: true,
+                  min: 0 
+                })} 
+                type="number" 
+                placeholder="Optional"
+              />
             </div>
           </div>
           <DialogFooter className="mt-4">
