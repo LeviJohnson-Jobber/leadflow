@@ -1,7 +1,7 @@
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import { Phone, Mail, MapPin } from "lucide-react";
+import { Phone, Mail, MapPin, DollarSign } from "lucide-react";
 import type { Lead } from "./LeadCard";
 import { cn } from "@/lib/utils";
 import LeadMap from "./LeadMap";
@@ -30,14 +30,18 @@ export function LeadDetailsModal({ lead, open, onOpenChange }: LeadDetailsModalP
           {/* Contact Information */}
           <div className="space-y-4">
             <div className="flex items-start gap-3">
-              {lead.contactMethod === "phone" ? (
-                <Phone className="w-5 h-5 text-gray-500 mt-0.5" />
-              ) : (
-                <Mail className="w-5 h-5 text-gray-500 mt-0.5" />
-              )}
+              <Phone className="w-5 h-5 text-gray-500 mt-0.5" />
               <div>
-                <p className="text-sm font-medium text-gray-500">Contact</p>
-                <p className="text-gray-900">{lead.contactInfo}</p>
+                <p className="text-sm font-medium text-gray-500">Phone</p>
+                <p className="text-gray-900">{lead.phone}</p>
+              </div>
+            </div>
+
+            <div className="flex items-start gap-3">
+              <Mail className="w-5 h-5 text-gray-500 mt-0.5" />
+              <div>
+                <p className="text-sm font-medium text-gray-500">Email</p>
+                <p className="text-gray-900">{lead.email}</p>
               </div>
             </div>
 
@@ -50,6 +54,22 @@ export function LeadDetailsModal({ lead, open, onOpenChange }: LeadDetailsModalP
                 </p>
               </div>
             </div>
+
+            {lead.estimatedValue && (
+              <div className="flex items-start gap-3">
+                <DollarSign className="w-5 h-5 text-gray-500 mt-0.5" />
+                <div>
+                  <p className="text-sm font-medium text-gray-500">Estimated Value</p>
+                  <p className="text-gray-900">
+                    {new Intl.NumberFormat('en-US', {
+                      style: 'currency',
+                      currency: 'USD',
+                      maximumFractionDigits: 0,
+                    }).format(lead.estimatedValue)}
+                  </p>
+                </div>
+              </div>
+            )}
           </div>
 
           {/* Map */}
@@ -69,12 +89,6 @@ export function LeadDetailsModal({ lead, open, onOpenChange }: LeadDetailsModalP
           <div>
             <h3 className="text-sm font-medium text-gray-500 mb-2">Current Status</h3>
             <div className="flex items-center gap-2">
-              <span className={cn(
-                "inline-flex items-center px-3 py-1 rounded-full text-sm font-medium",
-                lead.isHot ? "bg-orange-100 text-orange-700" : "bg-blue-100 text-blue-700"
-              )}>
-                {lead.isHot ? "Hot Lead" : "Regular Lead"}
-              </span>
               <span className="text-sm text-gray-500">
                 in {lead.stage} for {Math.floor(
                   (new Date().getTime() - new Date(lead.stageEnteredAt).getTime()) / (1000 * 60 * 60 * 24)
