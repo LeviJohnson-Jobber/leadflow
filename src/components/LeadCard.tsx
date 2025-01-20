@@ -1,7 +1,7 @@
 import { DollarSign, Flame } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Draggable } from "react-beautiful-dnd";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { LeadDetailsModal } from "./LeadDetailsModal";
 
 export interface Lead {
@@ -38,8 +38,8 @@ export function LeadCard({ lead, className, index }: LeadCardProps) {
   const [isHot, setIsHot] = useState(false);
   const [isOverdue, setIsOverdue] = useState(false);
   
-  useEffect(() => {
-    const checkStatus = () => {
+  const checkStatus = useCallback(() => {
+    try {
       // Check if lead is hot based on stored hot lead value
       const hotLeadValue = Number(localStorage.getItem('hotLeadValue')) || 20000;
       setIsHot(lead.estimatedValue ? lead.estimatedValue >= hotLeadValue : false);
@@ -52,26 +52,30 @@ export function LeadCard({ lead, className, index }: LeadCardProps) {
       
       const maxDaysForStage = stageMaxDays[lead.stage];
       setIsOverdue(maxDaysForStage ? daysInStage > maxDaysForStage : false);
-    };
+    } catch (error) {
+      console.error('Error checking lead status:', error);
+    }
+  }, [lead.estimatedValue, lead.stage, lead.stageEnteredAt]);
 
-    // Check status initially
+  useEffect(() => {
+    // Initial check
     checkStatus();
 
-    // Add storage event listener
-    const handleStorageChange = () => {
-      checkStatus();
+    // Create a single handler for both events
+    const handleUpdate = () => {
+      requestAnimationFrame(checkStatus);
     };
 
-    window.addEventListener('storage', handleStorageChange);
-    
-    // Also listen for custom event for same-window updates
-    window.addEventListener('defaultsUpdated', handleStorageChange);
+    // Add event listeners
+    window.addEventListener('storage', handleUpdate);
+    window.addEventListener('defaultsUpdated', handleUpdate);
 
     return () => {
-      window.removeEventListener('storage', handleStorageChange);
-      window.removeEventListener('defaultsUpdated', handleStorageChange);
+      // Clean up event listeners
+      window.removeEventListener('storage', handleUpdate);
+      window.removeEventListener('defaultsUpdated', handleUpdate);
     };
-  }, [lead.estimatedValue, lead.stage, lead.stageEnteredAt]);
+  }, [checkStatus]);
 
   const daysInStage = Math.floor(
     (new Date().getTime() - new Date(lead.stageEnteredAt).getTime()) / (1000 * 60 * 60 * 24)
