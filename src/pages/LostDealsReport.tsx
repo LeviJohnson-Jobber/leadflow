@@ -1,11 +1,10 @@
 import { useNavigate } from "react-router-dom";
+import { BarChart, Bar, PieChart, Pie, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { AppHeader } from "@/components/AppHeader";
 import { AppSidebar } from "@/components/AppSidebar";
 import { SidebarProvider } from "@/components/ui/sidebar";
-import { ChartContainer, ChartTooltip } from "@/components/ui/chart";
-import { Bar, Pie, Cell, XAxis, YAxis, CartesianGrid, Legend, ResponsiveContainer } from "recharts";
 
 const lostDeals = [
   {
@@ -47,15 +46,6 @@ const reasonData = [
 
 const COLORS = ['#ef4444', '#f97316', '#eab308', '#84cc16'];
 
-const chartConfig = {
-  value: {
-    theme: {
-      light: "hsl(var(--destructive))",
-      dark: "hsl(var(--destructive))",
-    },
-  },
-};
-
 const LostDealsReport = () => {
   const navigate = useNavigate();
   const totalValue = lostDeals.reduce((sum, deal) => sum + deal.value, 0);
@@ -79,48 +69,52 @@ const LostDealsReport = () => {
               </div>
             </div>
             
+            <Card className="p-6 mb-6">
+              <h3 className="text-lg font-semibold mb-2">Total Lost Value</h3>
+              <p className="text-3xl font-bold text-red-600">
+                ${totalValue.toLocaleString()}
+              </p>
+            </Card>
+
             <div className="grid md:grid-cols-2 gap-6 mb-6">
               <Card className="p-6">
                 <h2 className="text-lg font-semibold mb-4">Lost Reasons Distribution</h2>
                 <div className="h-[300px]">
-                  <ChartContainer config={chartConfig}>
-                    <Pie
-                      data={reasonData}
-                      dataKey="value"
-                      cx="50%"
-                      cy="50%"
-                      labelLine={false}
-                      label={({ name, percent }) => `${name} (${(percent * 100).toFixed(0)}%)`}
-                      outerRadius={80}
-                    >
-                      {reasonData.map((entry, index) => (
-                        <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                      ))}
-                    </Pie>
-                  </ChartContainer>
+                  <ResponsiveContainer width="100%" height="100%">
+                    <PieChart>
+                      <Pie
+                        data={reasonData}
+                        cx="50%"
+                        cy="50%"
+                        labelLine={false}
+                        label={({ name, percent }) => `${name} (${(percent * 100).toFixed(0)}%)`}
+                        outerRadius={80}
+                        fill="#8884d8"
+                        dataKey="value"
+                      >
+                        {reasonData.map((entry, index) => (
+                          <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                        ))}
+                      </Pie>
+                      <Tooltip />
+                    </PieChart>
+                  </ResponsiveContainer>
                 </div>
               </Card>
 
               <Card className="p-6">
                 <h2 className="text-lg font-semibold mb-4">Lost Value by Service</h2>
                 <div className="h-[300px]">
-                  <ChartContainer config={chartConfig}>
-                    <ResponsiveContainer>
-                      <Bar data={lostDeals} dataKey="value">
-                        <CartesianGrid strokeDasharray="3 3" />
-                        <XAxis dataKey="service" />
-                        <YAxis />
-                        <ChartTooltip />
-                        <Legend />
-                        <Bar
-                          dataKey="value"
-                          fill="var(--color-value)"
-                          radius={[4, 4, 0, 0]}
-                          name="Lost Value ($)"
-                        />
-                      </Bar>
-                    </ResponsiveContainer>
-                  </ChartContainer>
+                  <ResponsiveContainer width="100%" height="100%">
+                    <BarChart data={lostDeals}>
+                      <CartesianGrid strokeDasharray="3 3" />
+                      <XAxis dataKey="service" />
+                      <YAxis />
+                      <Tooltip />
+                      <Legend />
+                      <Bar dataKey="value" fill="#ef4444" name="Lost Value ($)" />
+                    </BarChart>
+                  </ResponsiveContainer>
                 </div>
               </Card>
             </div>
