@@ -179,6 +179,147 @@ const initialLeads: Lead[] = [
         lat: 37.7932,
         lng: -122.3984
       }
+    },
+    {
+      id: "9",
+      name: "Corporate Office Renovation",
+      phone: "555-9876",
+      email: "corporate@email.com",
+      service: "Commercial Renovation",
+      estimatedValue: 75000,
+      createdAt: new Date(Date.now() - 1000 * 60 * 60 * 24 * 45),
+      stage: "won",
+      stageEnteredAt: new Date(),
+      lastContacted: new Date(Date.now() - 1000 * 60 * 60 * 24 * 1),
+      nextFollowUp: null,
+      assignedTo: "Sarah Williams",
+      location: {
+        address: "789 Market St, San Francisco, CA 94103",
+        lat: 37.7857,
+        lng: -122.4057
+      }
+    },
+    {
+      id: "10",
+      name: "Luxury Home Theater",
+      phone: "555-5432",
+      email: "luxury@email.com",
+      service: "Home Entertainment",
+      estimatedValue: 35000,
+      createdAt: new Date(Date.now() - 1000 * 60 * 60 * 24 * 30),
+      stage: "won",
+      stageEnteredAt: new Date(),
+      lastContacted: new Date(Date.now() - 1000 * 60 * 60 * 24 * 1),
+      nextFollowUp: null,
+      assignedTo: "Mike Johnson",
+      location: {
+        address: "456 Pine St, San Francisco, CA 94108",
+        lat: 37.7891,
+        lng: -122.4089
+      }
+    },
+    {
+      id: "11",
+      name: "Smart Home Installation",
+      phone: "555-8765",
+      email: "smart@email.com",
+      service: "Home Automation",
+      estimatedValue: 25000,
+      createdAt: new Date(Date.now() - 1000 * 60 * 60 * 24 * 21),
+      stage: "won",
+      stageEnteredAt: new Date(),
+      lastContacted: new Date(Date.now() - 1000 * 60 * 60 * 24 * 1),
+      nextFollowUp: null,
+      assignedTo: "John Doe",
+      location: {
+        address: "123 California St, San Francisco, CA 94111",
+        lat: 37.7936,
+        lng: -122.3990
+      }
+    },
+    {
+      id: "12",
+      name: "Restaurant Remodel",
+      phone: "555-2345",
+      email: "restaurant@email.com",
+      service: "Commercial Renovation",
+      estimatedValue: 120000,
+      createdAt: new Date(Date.now() - 1000 * 60 * 60 * 24 * 60),
+      stage: "lost",
+      stageEnteredAt: new Date(),
+      lastContacted: new Date(Date.now() - 1000 * 60 * 60 * 24 * 1),
+      nextFollowUp: null,
+      assignedTo: "Jane Smith",
+      location: {
+        address: "567 Mission St, San Francisco, CA 94105",
+        lat: 37.7877,
+        lng: -122.3992
+      },
+      lostReason: "Budget constraints",
+      lostNotes: "Client decided to postpone due to budget limitations"
+    },
+    {
+      id: "13",
+      name: "Office Security System",
+      phone: "555-3456",
+      email: "security@email.com",
+      service: "Security Systems",
+      estimatedValue: 45000,
+      createdAt: new Date(Date.now() - 1000 * 60 * 60 * 24 * 40),
+      stage: "lost",
+      stageEnteredAt: new Date(),
+      lastContacted: new Date(Date.now() - 1000 * 60 * 60 * 24 * 1),
+      nextFollowUp: null,
+      assignedTo: "David Brown",
+      location: {
+        address: "890 Howard St, San Francisco, CA 94103",
+        lat: 37.7821,
+        lng: -122.4058
+      },
+      lostReason: "Competitor selected",
+      lostNotes: "Client went with a lower-priced competitor"
+    },
+    {
+      id: "14",
+      name: "Residential Pool",
+      phone: "555-4567",
+      email: "pool@email.com",
+      service: "Pool Construction",
+      estimatedValue: 65000,
+      createdAt: new Date(Date.now() - 1000 * 60 * 60 * 24 * 35),
+      stage: "lost",
+      stageEnteredAt: new Date(),
+      lastContacted: new Date(Date.now() - 1000 * 60 * 60 * 24 * 1),
+      nextFollowUp: null,
+      assignedTo: "Sarah Williams",
+      location: {
+        address: "234 Green St, San Francisco, CA 94133",
+        lat: 37.7991,
+        lng: -122.4033
+      },
+      lostReason: "Project delayed",
+      lostNotes: "Client decided to postpone project until next year"
+    },
+    {
+      id: "15",
+      name: "Solar Installation",
+      phone: "555-5678",
+      email: "solar@email.com",
+      service: "Solar Systems",
+      estimatedValue: 35000,
+      createdAt: new Date(Date.now() - 1000 * 60 * 60 * 24 * 25),
+      stage: "lost",
+      stageEnteredAt: new Date(),
+      lastContacted: new Date(Date.now() - 1000 * 60 * 60 * 24 * 1),
+      nextFollowUp: null,
+      assignedTo: "Mike Johnson",
+      location: {
+        address: "345 Union St, San Francisco, CA 94133",
+        lat: 37.7998,
+        lng: -122.4037
+      },
+      lostReason: "Changed requirements",
+      lostNotes: "Client changed project scope significantly"
     }
 ];
 

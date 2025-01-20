@@ -1,4 +1,4 @@
-import { Settings } from "lucide-react";
+import { Settings, BarChart2 } from "lucide-react";
 import { Button } from "./ui/button";
 import { NewLeadDialog } from "./NewLeadDialog";
 import { useNavigate } from "react-router-dom";
@@ -26,6 +26,14 @@ export function PipelineHeader({ pipelineName, onLeadCreate, stages }: PipelineH
       <h1 className="text-2xl font-bold text-gray-900">{pipelineName}</h1>
       <div className="flex gap-2">
         <NewLeadDialog onLeadCreate={onLeadCreate} />
+        <Button 
+          variant="outline" 
+          className="text-slate-700" 
+          onClick={() => navigate("/reports")}
+        >
+          <BarChart2 className="h-4 w-4 mr-2" />
+          Reports
+        </Button>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="outline" size="icon">
