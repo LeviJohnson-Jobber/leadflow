@@ -1,10 +1,11 @@
 import { useNavigate } from "react-router-dom";
-import { BarChart, LineChart, Line, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { AppHeader } from "@/components/AppHeader";
 import { AppSidebar } from "@/components/AppSidebar";
 import { SidebarProvider } from "@/components/ui/sidebar";
+import { ChartContainer, ChartTooltip } from "@/components/ui/chart";
+import { Bar, Line, XAxis, YAxis, CartesianGrid, Legend } from "recharts";
 
 const data = [
   { stage: 'New', count: 2, conversionRate: 85 },
@@ -15,6 +16,21 @@ const data = [
   { stage: 'Won', count: 3, conversionRate: 100 },
   { stage: 'Lost', count: 4, conversionRate: 0 },
 ];
+
+const chartConfig = {
+  count: {
+    theme: {
+      light: "hsl(var(--primary))",
+      dark: "hsl(var(--primary))",
+    },
+  },
+  conversionRate: {
+    theme: {
+      light: "hsl(var(--success))",
+      dark: "hsl(var(--success))",
+    },
+  },
+};
 
 const PipelineReport = () => {
   const navigate = useNavigate();
@@ -42,37 +58,60 @@ const PipelineReport = () => {
               <Card className="p-6">
                 <h2 className="text-lg font-semibold mb-4">Leads by Stage</h2>
                 <div className="h-[400px]">
-                  <ResponsiveContainer width="100%" height="100%">
-                    <BarChart data={data}>
+                  <ChartContainer config={chartConfig}>
+                    <Bar
+                      data={data}
+                      margin={{
+                        top: 5,
+                        right: 30,
+                        left: 20,
+                        bottom: 5,
+                      }}
+                    >
                       <CartesianGrid strokeDasharray="3 3" />
                       <XAxis dataKey="stage" />
                       <YAxis />
-                      <Tooltip />
+                      <ChartTooltip />
                       <Legend />
-                      <Bar dataKey="count" fill="#4f46e5" name="Number of Leads" />
-                    </BarChart>
-                  </ResponsiveContainer>
+                      <Bar
+                        dataKey="count"
+                        fill="var(--color-count)"
+                        radius={[4, 4, 0, 0]}
+                        name="Number of Leads"
+                      />
+                    </Bar>
+                  </ChartContainer>
                 </div>
               </Card>
               
               <Card className="p-6">
                 <h2 className="text-lg font-semibold mb-4">Conversion Rate by Stage</h2>
                 <div className="h-[400px]">
-                  <ResponsiveContainer width="100%" height="100%">
-                    <LineChart data={data}>
+                  <ChartContainer config={chartConfig}>
+                    <Line
+                      data={data}
+                      margin={{
+                        top: 5,
+                        right: 30,
+                        left: 20,
+                        bottom: 5,
+                      }}
+                    >
                       <CartesianGrid strokeDasharray="3 3" />
                       <XAxis dataKey="stage" />
                       <YAxis />
-                      <Tooltip />
+                      <ChartTooltip />
                       <Legend />
-                      <Line 
-                        type="monotone" 
-                        dataKey="conversionRate" 
-                        stroke="#4f46e5" 
+                      <Line
+                        type="monotone"
+                        dataKey="conversionRate"
+                        stroke="var(--color-conversionRate)"
                         name="Conversion Rate (%)"
+                        strokeWidth={2}
+                        dot={{ strokeWidth: 2 }}
                       />
-                    </LineChart>
-                  </ResponsiveContainer>
+                    </Line>
+                  </ChartContainer>
                 </div>
               </Card>
             </div>

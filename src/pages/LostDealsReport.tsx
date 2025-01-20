@@ -1,10 +1,11 @@
 import { useNavigate } from "react-router-dom";
-import { BarChart, Bar, PieChart, Pie, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { AppHeader } from "@/components/AppHeader";
 import { AppSidebar } from "@/components/AppSidebar";
 import { SidebarProvider } from "@/components/ui/sidebar";
+import { ChartContainer, ChartTooltip } from "@/components/ui/chart";
+import { Bar, Pie, Cell, XAxis, YAxis, CartesianGrid, Legend } from "recharts";
 
 const lostDeals = [
   {
@@ -46,6 +47,15 @@ const reasonData = [
 
 const COLORS = ['#ef4444', '#f97316', '#eab308', '#84cc16'];
 
+const chartConfig = {
+  value: {
+    theme: {
+      light: "hsl(var(--destructive))",
+      dark: "hsl(var(--destructive))",
+    },
+  },
+};
+
 const LostDealsReport = () => {
   const navigate = useNavigate();
   const totalValue = lostDeals.reduce((sum, deal) => sum + deal.value, 0);
@@ -80,41 +90,51 @@ const LostDealsReport = () => {
               <Card className="p-6">
                 <h2 className="text-lg font-semibold mb-4">Lost Reasons Distribution</h2>
                 <div className="h-[300px]">
-                  <ResponsiveContainer width="100%" height="100%">
-                    <PieChart>
-                      <Pie
-                        data={reasonData}
-                        cx="50%"
-                        cy="50%"
-                        labelLine={false}
-                        label={({ name, percent }) => `${name} (${(percent * 100).toFixed(0)}%)`}
-                        outerRadius={80}
-                        fill="#8884d8"
-                        dataKey="value"
-                      >
-                        {reasonData.map((entry, index) => (
-                          <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                        ))}
-                      </Pie>
-                      <Tooltip />
-                    </PieChart>
-                  </ResponsiveContainer>
+                  <ChartContainer config={chartConfig}>
+                    <Pie
+                      data={reasonData}
+                      cx="50%"
+                      cy="50%"
+                      labelLine={false}
+                      label={({ name, percent }) => `${name} (${(percent * 100).toFixed(0)}%)`}
+                      outerRadius={80}
+                      dataKey="value"
+                    >
+                      {reasonData.map((entry, index) => (
+                        <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                      ))}
+                    </Pie>
+                    <ChartTooltip />
+                  </ChartContainer>
                 </div>
               </Card>
 
               <Card className="p-6">
                 <h2 className="text-lg font-semibold mb-4">Lost Value by Service</h2>
                 <div className="h-[300px]">
-                  <ResponsiveContainer width="100%" height="100%">
-                    <BarChart data={lostDeals}>
+                  <ChartContainer config={chartConfig}>
+                    <Bar
+                      data={lostDeals}
+                      margin={{
+                        top: 5,
+                        right: 30,
+                        left: 20,
+                        bottom: 5,
+                      }}
+                    >
                       <CartesianGrid strokeDasharray="3 3" />
                       <XAxis dataKey="service" />
                       <YAxis />
-                      <Tooltip />
+                      <ChartTooltip />
                       <Legend />
-                      <Bar dataKey="value" fill="#ef4444" name="Lost Value ($)" />
-                    </BarChart>
-                  </ResponsiveContainer>
+                      <Bar
+                        dataKey="value"
+                        fill="var(--color-value)"
+                        radius={[4, 4, 0, 0]}
+                        name="Lost Value ($)"
+                      />
+                    </Bar>
+                  </ChartContainer>
                 </div>
               </Card>
             </div>

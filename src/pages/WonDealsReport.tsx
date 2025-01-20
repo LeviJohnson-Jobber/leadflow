@@ -1,10 +1,11 @@
 import { useNavigate } from "react-router-dom";
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { AppHeader } from "@/components/AppHeader";
 import { AppSidebar } from "@/components/AppSidebar";
 import { SidebarProvider } from "@/components/ui/sidebar";
+import { ChartContainer, ChartTooltip } from "@/components/ui/chart";
+import { Bar, XAxis, YAxis, CartesianGrid, Legend } from "recharts";
 
 const wonDeals = [
   {
@@ -35,6 +36,15 @@ const valueByService = [
   { service: "Home Entertainment", value: 35000 },
   { service: "Home Automation", value: 25000 }
 ];
+
+const chartConfig = {
+  value: {
+    theme: {
+      light: "hsl(var(--success))",
+      dark: "hsl(var(--success))",
+    },
+  },
+};
 
 const WonDealsReport = () => {
   const navigate = useNavigate();
@@ -80,16 +90,29 @@ const WonDealsReport = () => {
             <Card className="p-6 mb-6">
               <h2 className="text-lg font-semibold mb-4">Value by Service</h2>
               <div className="h-[400px]">
-                <ResponsiveContainer width="100%" height="100%">
-                  <BarChart data={valueByService}>
+                <ChartContainer config={chartConfig}>
+                  <Bar
+                    data={valueByService}
+                    margin={{
+                      top: 5,
+                      right: 30,
+                      left: 20,
+                      bottom: 5,
+                    }}
+                  >
                     <CartesianGrid strokeDasharray="3 3" />
                     <XAxis dataKey="service" />
                     <YAxis />
-                    <Tooltip />
+                    <ChartTooltip />
                     <Legend />
-                    <Bar dataKey="value" fill="#22c55e" name="Deal Value ($)" />
-                  </BarChart>
-                </ResponsiveContainer>
+                    <Bar
+                      dataKey="value"
+                      fill="var(--color-value)"
+                      radius={[4, 4, 0, 0]}
+                      name="Deal Value ($)"
+                    />
+                  </Bar>
+                </ChartContainer>
               </div>
             </Card>
 
