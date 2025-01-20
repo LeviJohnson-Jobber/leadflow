@@ -1,8 +1,9 @@
 import { DollarSign, Flame } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Draggable } from "react-beautiful-dnd";
-import { useState, useEffect, useCallback } from "react";
+import { useState } from "react";
 import { LeadDetailsModal } from "./LeadDetailsModal";
+import { useQuery } from "@tanstack/react-query";
 
 export interface Lead {
   id: string;
@@ -30,57 +31,31 @@ interface LeadCardProps {
   lead: Lead;
   className?: string;
   index: number;
-  onDefaultsChange?: () => void;
 }
+
+const getDefaults = () => {
+  const hotLeadValue = Number(localStorage.getItem('hotLeadValue')) || 20000;
+  const stageMaxDays = JSON.parse(localStorage.getItem('stageMaxDays') || '{}');
+  return { hotLeadValue, stageMaxDays };
+};
 
 export function LeadCard({ lead, className, index }: LeadCardProps) {
   const [showDetails, setShowDetails] = useState(false);
-  const [isHot, setIsHot] = useState(false);
-  const [isOverdue, setIsOverdue] = useState(false);
-  
-  const checkStatus = useCallback(() => {
-    try {
-      // Check if lead is hot based on stored hot lead value
-      const hotLeadValue = Number(localStorage.getItem('hotLeadValue')) || 20000;
-      setIsHot(lead.estimatedValue ? lead.estimatedValue >= hotLeadValue : false);
 
-      // Check if lead is overdue based on stored stage max days
-      const stageMaxDays = JSON.parse(localStorage.getItem('stageMaxDays') || '{}');
-      const daysInStage = Math.floor(
-        (new Date().getTime() - new Date(lead.stageEnteredAt).getTime()) / (1000 * 60 * 60 * 24)
-      );
-      
-      const maxDaysForStage = stageMaxDays[lead.stage];
-      setIsOverdue(maxDaysForStage ? daysInStage > maxDaysForStage : false);
-    } catch (error) {
-      console.error('Error checking lead status:', error);
-    }
-  }, [lead.estimatedValue, lead.stage, lead.stageEnteredAt]);
-
-  useEffect(() => {
-    // Initial check
-    checkStatus();
-
-    // Create a single handler for both events
-    const handleUpdate = () => {
-      requestAnimationFrame(checkStatus);
-    };
-
-    // Add event listeners
-    window.addEventListener('storage', handleUpdate);
-    window.addEventListener('defaultsUpdated', handleUpdate);
-
-    return () => {
-      // Clean up event listeners
-      window.removeEventListener('storage', handleUpdate);
-      window.removeEventListener('defaultsUpdated', handleUpdate);
-    };
-  }, [checkStatus]);
+  const { data: defaults } = useQuery({
+    queryKey: ['pipelineDefaults'],
+    queryFn: getDefaults,
+    refetchOnWindowFocus: true,
+    refetchInterval: 1000, // Poll every second
+  });
 
   const daysInStage = Math.floor(
     (new Date().getTime() - new Date(lead.stageEnteredAt).getTime()) / (1000 * 60 * 60 * 24)
   );
 
+  const isHot = lead.estimatedValue ? lead.estimatedValue >= (defaults?.hotLeadValue || 20000) : false;
+  const maxDaysForStage = defaults?.stageMaxDays?.[lead.stage];
+  const isOverdue = maxDaysForStage ? daysInStage > maxDaysForStage : false;
   const isLost = lead.stage === "lost";
 
   return (

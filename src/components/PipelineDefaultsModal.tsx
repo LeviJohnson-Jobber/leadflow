@@ -4,6 +4,7 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { useState, useEffect } from "react";
 import { toast } from "sonner";
+import { useQueryClient } from "@tanstack/react-query";
 
 interface PipelineStage {
   id: string;
@@ -24,6 +25,7 @@ export function PipelineDefaultsModal({
 }: PipelineDefaultsModalProps) {
   const [hotLeadValue, setHotLeadValue] = useState(20000);
   const [stageMaxDays, setStageMaxDays] = useState<Record<string, number>>({});
+  const queryClient = useQueryClient();
 
   useEffect(() => {
     // Load saved values from localStorage
@@ -69,8 +71,8 @@ export function PipelineDefaultsModal({
     localStorage.setItem('hotLeadValue', hotLeadValue.toString());
     localStorage.setItem('stageMaxDays', JSON.stringify(stageMaxDays));
     
-    // Dispatch custom event to notify components of the update
-    window.dispatchEvent(new Event('defaultsUpdated'));
+    // Invalidate the query to trigger a refresh
+    queryClient.invalidateQueries({ queryKey: ['pipelineDefaults'] });
     
     toast.success("Pipeline defaults saved successfully");
     onOpenChange(false);
